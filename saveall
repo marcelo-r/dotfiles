@@ -11,6 +11,6 @@ cp $HOME/.config/alacritty/alacritty.yml .config/alacritty/alacritty.yml
 cp $HOME/.config/i3/config .config/i3/config
 cp $HOME/.zshrc .zshrc
 cp $HOME/.tmux.conf .tmux.conf
-cp $HOME/.config/nvim/init.vim .config/nvim/init.vim
+cp -r $HOME/.config/nvim/ .config/nvim/
 cp $HOME/.config/nvim/coc-settings.json .config/nvim/coc-settings.json
 echo "done"
