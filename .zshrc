@@ -139,7 +139,7 @@ alias zshconfig="$EDITOR ~/.zshrc"
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
 
 export LOCALPATH="$HOME/.local/bin"
-export GOPATH="$HOME/go"
+export GOPATH="$HOME/.local/go"
 export GOBIN="$GOPATH/bin"
 
 export PATH="$PATH:$LOCALPATH:$GOBIN:$(yarn global bin)"
@@ -179,5 +179,5 @@ eval "$(pyenv virtualenv-init -)"
 # virtualenvwrapper
 #export WORKON_HOME=$HOME/.pyvenvs
 
-export PIPENV_VENV_IN_PROJECT=1
+#export PIPENV_VENV_IN_PROJECT=1
 

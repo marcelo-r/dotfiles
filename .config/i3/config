@@ -11,6 +11,12 @@
 
 set $mod Mod1
 
+# set microsoft key
+set $super Mod4
+bindsym $super+Home exec setxkbmap us alt-intl
+bindsym $super+End exec setxkbmap br
+
+
 # set monitors
 set $laptop eDP-1-1
 set $hdmi HDMI-0
@@ -323,12 +329,13 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # finds out, if available)
 bar {
     #output $hdmi
-    tray_output $hdmi
+    #tray_output $hdmi
+    tray_output $laptop
     mode hide
-	modifier Mod1
+	modifier $mod
 	status_command i3status
 	#status_command /home/marcelo/.config/i3/i3keyboard.sh
-	font pango: DejaVuMono 12
+	font pango: "Fira Code" 12
 
 	colors {
 	#    background #000000
@@ -365,11 +372,11 @@ exec --no-startup-id xrandr --output $laptop --right-of HDMI-0 --auto
 exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill $HOME/Pictures/bg.png
 # vpn
-#exec --no-startup-id "/opt/Mullvad\ VPN/mullvad-vpn %U" 
+exec --no-startup-id "/opt/Mullvad\ VPN/mullvad-vpn %U" 
 #exec /opt/piavpn/bin/pia-client
 
 # lock screen
-#bindsym $mod+Shift+l exec i3lock -e -c 000000
+bindsym $mod+Shift+Escape exec i3lock -e -c 111111
 
 
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
@@ -387,13 +394,9 @@ mode "$mode_system" {
 }
 # bindsym $mod+Deletemode "$mode_system"
 
-# set microsoft key
-set $ms Mod4
-bindsym $ms+Home exec setxkbmap us alt-intl
-bindsym $ms+End exec setxkbmap br
-
 # print screen
-bindsym Print exec --no-startup-id gnome-screenshot -ia
+bindsym Ctrl+Print exec --no-startup-id gnome-screenshot -ia
+bindsym Print exec --no-startup-id gnome-screenshot -f "$HOME/Pictures/screenshots/$(date).jpg"
 
 # function keys
 #bindsym XF86MonBrightnessDown exec xbacklight 

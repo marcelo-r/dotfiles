@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/home/mrc/code/dotfiles'
+let g:netrw_dirhist_4='/home/mrc/code/snet/migrador/softclin/modelos'
+let g:netrw_dirhist_3='/home/mrc/code/snet/migrador/softclin'
+let g:netrw_dirhist_2='/home/mrc/code/snet/migrador/softclin/modelos'
+let g:netrw_dirhist_1='/home/mrc/code/snet/migrador/softclin'

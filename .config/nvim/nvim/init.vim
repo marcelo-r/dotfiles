@@ -139,6 +139,7 @@ if !exists('g:vscode')
     let g:airline#extensions#ale#enabled = 1
     nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     nmap <silent> <C-j> <Plug>(ale_next_wrap)
+    nnoremap <silent>af :ALEFix<CR>
 
     " file explorer - nerd tree
     Plug 'scrooloose/nerdtree'
@@ -220,6 +221,9 @@ if !exists('g:vscode')
 
     " racket 
     Plug 'wlangstroth/vim-racket'
+
+    " elixir
+    Plug 'elixir-editors/vim-elixir'
     
     """ utils
     Plug 'kien/rainbow_parentheses.vim'
