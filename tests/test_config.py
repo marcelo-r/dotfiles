@@ -39,9 +39,18 @@ class TestParse(unittest.TestCase):
             with self.subTest(value=test):
                 self.assertDictEqual(expected, config.parse_package(test))
 
-    def test_load_1(self):
-        self.maxDiff = None
-        test = "config.ini"
+    def test_load_str(self):
+        test = """
+        [example]
+        # example
+        path = ~/.config/example/config
+        package = 
+            dnf: example 
+            apt: x-ample
+            git: https://path.to.repo.git --git-options dest-directory
+        pre_install_message = show this message before install process
+        post_install_message = after install show this message
+        """
         expected = {
             "example": {
                 "path": "~/.config/example/config",
@@ -50,8 +59,27 @@ class TestParse(unittest.TestCase):
                     "apt": "x-ample",
                     "git": "https://path.to.repo.git --git-options dest-directory",
                 },
-                "pre_install": {"message": "show this message before install process"},
-                "post_install": {"message": "after install show this message"},
+                "pre_install_message": "show this message before install process",
+                "post_install_message": "after install show this message",
+            },
+        }
+        got = config.load(test)
+        self.assertDictEqual(expected, got)
+
+    def test_load_file(self):
+        self.maxDiff = None
+        with open("config.ini", "r") as f:
+            test = f.read()
+        expected = {
+            "example": {
+                "path": "~/.config/example/config",
+                "package": {
+                    "dnf": "example",
+                    "apt": "x-ample",
+                    "git": "https://path.to.repo.git --git-options dest-directory",
+                },
+                "pre_install_message": "show this message before install process",
+                "post_install_message": "after install show this message",
             },
             "i3": {
                 "path": "~/.config/i3/config",
@@ -59,27 +87,21 @@ class TestParse(unittest.TestCase):
                     "dnf": "i3",
                     "apt": "i3wm",
                 },
-                "pre_install": {},
-                "post_install": {},
             },
             "asdf": {
-                "path": "~/.config/example/config",
+                "path": "$HOME/.asdfrc",
                 "package": {
-                    "git": "https://path.to.repo.git --git-options dest-directory",
+                    "git": "https://github.com/asdf-vm/asdf.git --branch v0.8.0 ~/.asdf",
                 },
-                "pre_install": {},
-                "post_install": {
-                    "message": """add the following to your ~/.zshrc
+                "post_install_message": """add the following to your ~/.zshrc
 . $HOME/.asdf/asdf.sh
-# append completions to fpath
 fpath=(${ASDF_DIR}/completions $fpath)
-# initialise completions with ZSH's compinit
 autoload -Uz compinit
-compinit"""
-                },
+compinit""",
             },
         }
-        self.assertDictEqual(expected, config.load(test))
+        got = config.load(test)
+        self.assertDictEqual(expected, got)
 
 
 if __name__ == "__main__":

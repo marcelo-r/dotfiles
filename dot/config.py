@@ -70,13 +70,15 @@ def detect_packman() -> dict:
             return packman
 
 
-def load(filename):
+# FIXME: comments inside messages are not allowed
+# TODO: pre or post messages will need its own parser
+def load(data: str, parser: configparser.ConfigParser=None) -> dict:
     _pre = "pre_install_"
     _post = "post_install_"
-    parser = configparser.ConfigParser()
-    parser.read(filename)
+    if not parser:
+        parser = configparser.ConfigParser()
+    parser.read_string(data)
     the_dict = {}
-    #import ipdb; ipdb.set_trace()
     for s in parser.sections():
         if not s or s.startswith("_"):
             continue
