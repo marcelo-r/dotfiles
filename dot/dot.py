@@ -1,21 +1,23 @@
 #!/bin/python
 """
-options:
-    install
+desired options:
+    config
+        --type -t {git, sqlite}
+    install [app [name]]
         --all (implied) 
         --config
-    config
-        up
-        save
-        --all (implied)
-    sync
+    app -> app subcommands
+        create
+        remove
+        list
+    sync [message]
+    save
 """
 
 import os
-import subprocess as subp
-import argparse
-
 import pdb
+
+import log
 
 apps = (
     {
@@ -83,13 +85,24 @@ def fmt_path(path, parent=None):
         return fmt_path(path[1:], parent)
     return f"{parent}/{path}"
 
+def create_app(name, config):
+    """
+    Create a new app
+    """
+    pass
+
+def save_app(name, config):
+    pass
+
+def remove_app(name):
+    pass
+
+def check_app(name):
+    pass
 
 if __name__ == "__main__":
     # we need HOME and current dir
-    HOME = os.path.expanduser("~")
-    if not HOME:
-        raise EnvironmentError("setup your $HOME environment variable and try again")
     PWD = os.getenv("PWD")
     DOTHOME = os.getenv("DOTHOME", f"{HOME}/.local/dots")
-    DOTHOME = f"{PWD}/home"
+    #DOTHOME = f"{PWD}/home"
     main()
