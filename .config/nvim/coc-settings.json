@@ -1,0 +1,23 @@
+{
+  "diagnostic.displayByAle": true,
+
+  "git.signOffset": 150,
+  "languageserver": {
+    "golang": {
+        "command": "gopls",
+        "rootPatterns": ["go.mod", ".git/", ".vim/", ".hg/"],
+        "filetypes": ["go"],
+        "trace.server": "verbose",
+        "initializationOptions": {
+            "usePlaceholders": true
+      }
+    }
+  },
+  "git.enableGutters": true,
+
+  "python.jediEnabled": false,
+  "python.pipenvPath": "pipenv",
+  "python.venvPath": "/home/mrc/.virtualenvs",
+
+  "elixir.pathToElixirLS": "~/.elixir-ls/release/language_server.sh"
+}
