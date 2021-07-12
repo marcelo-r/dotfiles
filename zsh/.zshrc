@@ -81,7 +81,6 @@ plugins=(
     git
     github
     golang
-    kubectl
     mix
 	python
     rust
@@ -113,7 +112,7 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 #export PATH="$(yarn global bin):$GOPATH/bin:$LOCALPATH:$PATH"
-export EDITOR="nvim"
+export EDITOR="nv"
 
 autoload -U compinit
 compinit -i
@@ -140,19 +139,11 @@ export FZF_COMPLETION_TRIGGER="~~"
 export FZF_ALT_C_COMMAND="fd -t d --exclude ~/Games . $HOME"
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
-# command for listing path candidates.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
-}
-
 alias l="ls"
 alias ll="exa -l"
 alias la="exa -la"
-alias nv="nvim"
+alias t="tree -d"
+alias nv="neovim"
 alias dkps="docker ps --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
 alias dkpsa="docker ps -a --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
 #alias rg="rg -i"

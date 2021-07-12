@@ -1,0 +1,12 @@
+{
+  "diagnostic.displayByAle": true,
+
+  "git.signOffset": 150,
+  "git.enableGutters": true,
+
+  "python.jediEnabled": false,
+  "python.pipenvPath": "pipenv",
+  "python.venvPath": "/home/mrc/.virtualenvs",
+
+  "elixir.pathToElixirLS": "~/.elixir-ls/release/language_server.sh"
+}
