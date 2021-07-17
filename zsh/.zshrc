@@ -19,15 +19,17 @@ HIST_STAMPS="yyyy-mm-dd"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 	asdf
-	clojure
 	dnf
 	extract
 	git
 	github
 	golang
+	lein
 	mix
 	python
+	vi-mode
 )
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -43,7 +45,7 @@ fpath+=${ZDOTDIR:-~}/.zsh_functions
 eval "$(direnv hook zsh)"
 eval "$(pipenv --completion)"
 # must be in this order for key bindings to work
-eval "$(starship init zsh)"
+#eval "$(starship init zsh)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 # env ars
