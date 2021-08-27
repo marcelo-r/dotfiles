@@ -27,19 +27,13 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'Yggdroot/indentLine'
-""" langs
-" python
-"Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
-Plug 'psf/black', { 'branch': 'stable', 'for': 'python' }
-" golang
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'sebdah/vim-delve'
-" yaml 
-Plug 'stephpy/vim-yaml'
-"docker
-Plug 'ekalinin/dockerfile.vim'
+""" language support
 
-""" optionals
+
+" golang debugger
+Plug 'sebdah/vim-delve'
+Plug 'Konfekt/FastFold'
+
 " themes 
 Plug 'sainnhe/sonokai'
 let g:sonokai_diagnostic_text_highlight = 1
@@ -49,6 +43,7 @@ if has('nvim-0.5')
     let g:minimap_width = 10
     let g:minimap_git_colors = 1
 endif
+
 "Plug 'jeffkreeftmeijer/vim-numbertoggle'
 "set number relativenumber
 "Plug 'ervandew/supertab'
@@ -174,35 +169,9 @@ let g:gitgutter_enabled = 1
 let g:gitgutter_signs = 1
 
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_extensions = ['fzf', 'branch', 'tabline', 'ale', 'coc']
+let g:airline_extensions = ['fzf', 'branch', 'ale', 'coc']
 let g:airline_section_z = '%c %l/%L'
 let g:airline#extensions#ale#enabled = 1
-let g:airline#extensions#tabline#show_tab_count = 0
-let g:airline#extensions#tabline#buffers_label = 'b'
-let g:airline#extensions#tabline#tabs_label = 't'
-
-let g:go_code_completion_enabled = 0
-let g:go_info_mode='gopls'
-let g:go_def_mode='gopls'
-let g:go_doc_popup_window = 1
-let g:go_metalinter_command = 'golangci-lint'
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_enabled = ['vet', 'revive', 'errcheck', 'deadcode', 'gosimple', 'unused', 'ineffassign', 'lll', 'staticcheck', 'prealloc', 'gomnd', 'goconst', 'gosec', 'cyclop']
-let g:go_metalinter_autosave_enabled = ['vet', 'revive', 'errcheck', 'deadcode', 'gosimple', 'unused', 'ineffassign', 'lll', 'staticcheck', 'prealloc', 'gomnd', 'goconst', 'gosec']
-let g:go_test_show_name = 1
-let g:go_jump_to_error = 0
-let g:go_fmt_autosave = 1
-" syntax highlight
-let g:go_highlight_structs = 1 
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_function_parameters = 0
-let g:go_highlight_function_calls = 1
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_extra_types = 1
 
 let g:indentLine_char_list = ['⎸']
 
@@ -210,17 +179,16 @@ let g:indentLine_char_list = ['⎸']
 let g:UltiSnipsExpandTrigger="<C-l>"
 
 """ plugin mappings - <leader>p
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <leader>0 <Plug>AirlineSelectTab0
+nmap <leader>1 <esc>1gt
+nmap <leader>2 <esc>2gt
+nmap <leader>3 <esc>3gt
+nmap <leader>4 <esc>4gt
+nmap <leader>5 <esc>5gt
+nmap <leader>6 <esc>6gt
+nmap <leader>7 <esc>7gt
+nmap <leader>8 <esc>8gt
+nmap <leader>9 <esc>9gt
+nmap <leader>0 <esc>0gt
 
 " coc.nvim
 " Remap keys for gotos

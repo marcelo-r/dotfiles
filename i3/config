@@ -27,7 +27,7 @@ set $hdmi HDMI-0
 #font pango:monospace 8
 font pango:DejaVu Sans Mono 9
 title_align center
-hide_edge_borders smart
+hide_edge_borders both
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -213,8 +213,8 @@ bar {
     tray_output $laptop
     mode hide
 	modifier $mod
-	#status_command i3status
-    status_command /bin/i3status-rs /home/marcelo/.config/i3status-rust/config.toml
+	status_command i3status
+    #status_command /bin/i3status-rs /home/marcelo/.config/i3status-rust/config.toml
 	font pango: FiraCode Nerd Font 13
 	#font pango: DejaVu Sans Mono 13
 
@@ -239,8 +239,12 @@ for_window [window_role="Preferences"] floating enable
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [class="GParted"] floating enable border normal
+
 workspace_auto_back_and_forth yes
-bindsym $mod+\' workspace back_and_forth
+#bindsym $mod+\' workspace back_and_forth
 
 bindsym $mod+Shift+s sticky toggle
 # put YouTube into fullscreen and execute this for media mode
@@ -279,6 +283,7 @@ mode "$mode_system" {
 }
 #bindsym $mod+Delete mode "$mode_system"
 bindsym $mod+Pause mode "$mode_system"
+bindsym $mod+Delete mode "$mode_system"
 
 # print screen
 bindsym Print exec --no-startup-id gnome-screenshot -ia
@@ -320,3 +325,36 @@ bindsym XF86AudioPlay exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
+#set	$background	#272827
+#set	$foreground	#657b83
+#set $color4		#3e646f
+#
+# default i3 colors
+set $black #000000
+set $richblack #0c0c0c
+set $black2 #222222
+set $jet #333333
+set $grey #888888
+set $dimgrey #5f676a
+set $grey3 #484e50
+set $grey4 #292d2e
+set $gunmetal #2f343a
+set $white #ffffff
+set $darkred #900000
+set $blue #4c7899
+set $darkblue #285577
+set $lightblue #2e9ef4
+#
+# custom 
+set $blue #1F415C
+set $darkblue #1F415C
+
+# class                 border		backgr.			text		indicator		child_border
+client.focused          $blue		$darkblue		$white		$lightblue		$darkblue
+client.focused_inactive $jet		$dimgrey		$white 		$grey3			$dimgrey
+client.unfocused        $jet 		$black2			$grey		$grey4			$black2
+client.urgent           $gunmetal	$darkred		$white		$darkred		$darkred
+client.placeholder      $black		$richblack		$white 		$black			$richblack
+
+client.background       $white
