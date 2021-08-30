@@ -9,6 +9,7 @@ Plug 'SirVer/ultisnips'
 " file explorer 
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 " git support
@@ -27,27 +28,35 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'Yggdroot/indentLine'
-""" language support
-
-
-" golang debugger
+""" langs
+" python
+"Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
+Plug 'psf/black', { 'branch': 'stable', 'for': 'python' }
+" golang
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sebdah/vim-delve'
+" yaml 
+Plug 'stephpy/vim-yaml'
+"docker
+Plug 'ekalinin/dockerfile.vim'
 Plug 'Konfekt/FastFold'
 
+""" optionals
 " themes 
 Plug 'sainnhe/sonokai'
 let g:sonokai_diagnostic_text_highlight = 1
+Plug 'joshdick/onedark.vim'
 " minimap
 if has('nvim-0.5')
     Plug 'wfxr/minimap.vim'
     let g:minimap_width = 10
     let g:minimap_git_colors = 1
 endif
-
 "Plug 'jeffkreeftmeijer/vim-numbertoggle'
 "set number relativenumber
 "Plug 'ervandew/supertab'
 "let g:SuperTabDefaultCompletionType = "<c-n>"
+Plug 'szw/vim-smartclose'
 
 call plug#end()
 
@@ -55,7 +64,7 @@ set encoding=utf-8
 " allow buffers to open in background
 set hidden
 " Highlight the current line the cursor is on
-set cursorline
+"set cursorline
 " set mouse to scroll nvim instead of terminal emulator output
 set mouse=a
 
@@ -73,7 +82,7 @@ set number  " show line numbers
 set tw=79   " width of document (used by gd)
 set nowrap  " don't automatically wrap on load
 set fo-=t   " don't automatically wrap text when typing
-set colorcolumn=80
+set colorcolumn=80,120
 highlight ColorColumn ctermbg=233
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -168,10 +177,52 @@ let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded
 let g:gitgutter_enabled = 1
 let g:gitgutter_signs = 1
 
+let g:lightline = {
+	\ 'colorscheme': 'sonokai',
+	\ }
+
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_extensions = ['fzf', 'branch', 'ale', 'coc']
+let g:airline_extensions = ['fzf', 'branch', 'coc', 'quickfix', 'searchcount']
 let g:airline_section_z = '%c %l/%L'
-let g:airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#show_tab_count = 0
+let g:airline#extensions#tabline#buffers_label = 'b'
+let g:airline#extensions#tabline#tabs_label = 't'
+
+let g:go_code_completion_enabled = 0
+let g:go_info_mode='gopls'
+let g:go_def_mode='gopls'
+let g:go_doc_popup_window = 1
+let g:go_metalinter_command = 'golangci-lint'
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_enabled = [ 'bodyclose', 'deadcode', 'depguard', 'dogsled', 'dupl',
+    		\ 'errcheck', 'exhaustive', 'gochecknoinits', 'goconst', 'gocritic',
+    		\ 'gocyclo', 'gofmt', 'goimports', 'revive', 'gomnd',
+    		\ 'goprintffuncname', 'gosec', 'gosimple', 'govet', 'ineffassign',
+    		\ 'lll', 'misspell', 'nakedret', 'noctx', 'nolintlint',
+    		\ 'rowserrcheck', 'exportloopref', 'staticcheck', 'structcheck', 'stylecheck',
+    		\ 'typecheck', 'unconvert', 'unparam', 'unused', 'varcheck',
+    		\ 'asciicheck', 'gocognit', 'godox', 'goerr113', 'nestif',
+    		\ 'prealloc', 'whitespace']
+let g:go_metalinter_autosave_enabled = ['vet', 'revive', 'errcheck', 'deadcode',
+	\ 'ineffassign', 'lll', 'staticcheck', 'prealloc', 
+	\ 'gomnd', 'goconst', 'gosec']
+"let g:go_metalinter_deadline = "3s"
+"let g:go_list_height = 5 
+let g:go_list_type = "locationlist"
+let g:go_test_show_name = 1
+let g:go_jump_to_error = 0
+let g:go_fmt_autosave = 1
+" syntax highlight
+let g:go_highlight_structs = 1 
+let g:go_highlight_methods = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_types = 1
+"let g:go_highlight_build_constraints = 1
+"let g:go_highlight_function_parameters = 0
+"let g:go_highlight_function_calls = 1
+"let g:go_highlight_fields = 1
+"let g:go_highlight_extra_types = 1
 
 let g:indentLine_char_list = ['⎸']
 
@@ -215,29 +266,38 @@ endif
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " completion trigger and confirmation using tab
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? coc#_select_confirm() :
-  \ coc#expandableOrJumpable() ?
-  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ coc#refresh()
+"inoremap <silent><expr> <TAB>
+"  \ pumvisible() ? coc#_select_confirm() :
+"  \ coc#expandableOrJumpable() ?
+"  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"  \ <SID>check_back_space() ? "\<TAB>" :
+"  \ coc#refresh()
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 "let g:coc_snippet_next = '<tab>'
 
 " Remap <C-f> and <C-b> for scroll float windows/popups. (optional)
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
+"if has('nvim-0.4.0') || has('patch-8.2.0750')
+"  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+"  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+"  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+"  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+"  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+"  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+"endif
 
 " fzf
 nmap <leader>ff <esc>:FzfFiles<CR>
