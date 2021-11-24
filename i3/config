@@ -188,13 +188,16 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
-for_window [class=".*"] border pixel 1 
-for_window [class="(alacritty|term)"] border pixel 3
-#gaps inner 0
-#gaps outer 0
+#for_window [class=".*"] border pixel 1 
+#for_window [class="(alacritty|term)"] border pixel 3
 
-#smart_gaps on
-#smart_borders on
+# gaps
+for_window [class=".*"] border pixel 0 
+gaps inner 8
+gaps outer 2
+
+smart_gaps on
+smart_borders no_gaps
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -207,10 +210,10 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    #output $hdmi
-    #tray_output $hdmi
+    #tray_output primary
+    tray_output $hdmi
+    #tray_output $laptop
     position bottom
-    tray_output $laptop
     mode hide
 	modifier $mod
 	status_command i3status
@@ -240,6 +243,7 @@ for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
 for_window [class="Pavucontrol"] floating enable
+for_window [class="org.gnome.Software"] floating enable
 for_window [class="Lxappearance"] floating enable sticky enable border normal
 for_window [class="GParted"] floating enable border normal
 
@@ -252,8 +256,8 @@ bindsym $mod+y fullscreen disable; floating enable; resize set 600 400; sticky e
 
 ### starup
 # setup monitors
-exec --no-startup-id xrandr --output $hdmi --auto
-exec --no-startup-id xrandr --output $laptop --right-of HDMI-0 --auto
+exec --no-startup-id xrandr --output HDMI-0 --auto --primary
+exec --no-startup-id xrandr --output HDMI-0 --primary --right-of eDP-1- --auto
 # network manager
 exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpapers/_bg
@@ -318,13 +322,15 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute s
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessDon exec xbacklight -dec 20 # decrease screen brightness
 
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
+bindsym $mod+Shift+P exec --no-startup-id screenfix
 
 #set	$background	#272827
 #set	$foreground	#657b83

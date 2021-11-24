@@ -50,7 +50,6 @@ eval "$(pipenv --completion)"
 # export MANPATH="/usr/local/man:$MANPATH"
 # env ars
 export EDITOR="nvim"
-export EDITOR="nv"
 
 export LOCALPATH="$HOME/.local/bin"
 export GOPATH="$HOME/.local/go"
