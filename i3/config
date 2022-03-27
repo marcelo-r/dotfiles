@@ -10,13 +10,14 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # Mod1 = Alt
-# Mod4 = Super (Windows Key)
+# Mod4 = Super (Windows Key) / Command (Mac)
 set $mod Mod4
 
-# set microsoft key
-set $super Mod1
-bindsym $super+Home exec setxkbmap us intl
-bindsym $super+End exec setxkbmap br
+# mod1 is ALT
+set $alt_opt Mod1
+bindsym $alt_opt+Prior exec setxkbmap us
+bindsym $alt_opt+Home exec setxkbmap us intl # Alt+Home for 
+bindsym $alt_opt+End exec setxkbmap br
 
 # set monitors
 set $laptop eDP-1-1
@@ -188,16 +189,16 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
-#for_window [class=".*"] border pixel 1 
-#for_window [class="(alacritty|term)"] border pixel 3
+for_window [class="(alacritty|term)"] border pixel 3
+for_window [class=".*"] border pixel 1 
 
-# gaps
-for_window [class=".*"] border pixel 0 
-gaps inner 8
-gaps outer 2
+# i3-gaps
+#for_window [class=".*"] border pixel 0 
+#gaps inner 6
+#gaps outer 2
 
-smart_gaps on
-smart_borders no_gaps
+#smart_gaps on
+#smart_borders on
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -254,15 +255,13 @@ bindsym $mod+Shift+s sticky toggle
 # put YouTube into fullscreen and execute this for media mode
 bindsym $mod+y fullscreen disable; floating enable; resize set 600 400; sticky enable; move window to position 1940 54
 
-### starup
+### startup
 # setup monitors
 exec --no-startup-id xrandr --output HDMI-0 --auto --primary
 exec --no-startup-id xrandr --output HDMI-0 --primary --right-of eDP-1- --auto
 # network manager
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpapers/_bg
-# vpn
-exec --no-startup-id "/opt/Mullvad\ VPN/mullvad-vpn %U" 
+exec --no-startup-id feh --bg-center $HOME/Pictures/_bg
 
 exec --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
 
@@ -290,7 +289,7 @@ bindsym $mod+Pause mode "$mode_system"
 bindsym $mod+Delete mode "$mode_system"
 
 # print screen
-bindsym Print exec --no-startup-id gnome-screenshot -ia
+bindsym Print exec --no-startup-id xfce4-screenshooter
 bindsym Ctrl+Print exec --no-startup-id deepin-screenshot 
 #bindsym Print exec --no-startup-id gnome-screenshot -f "$HOME/Pictures/screenshots/$(date).jpg"
 
@@ -322,7 +321,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute s
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDon exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play

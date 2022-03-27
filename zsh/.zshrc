@@ -4,6 +4,12 @@
 # Path to your oh-my-zsh installation.
 export ZSH="/home/$USER/.oh-my-zsh"
 
+# asdf config and completion
+. $HOME/.asdf/asdf.sh
+fpath=(${ASDF_DIR}/completions $fpath)
+
+autoload -Uz compinit && compinit -y
+
 ZSH_THEME="robbyrussell"
 
 # display red dots whilst waiting for completion.
@@ -51,6 +57,9 @@ eval "$(pipenv --completion)"
 # env ars
 export EDITOR="nvim"
 
+alias zshconfig="$EDITOR ~/.zshrc"
+alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
+
 export LOCALPATH="$HOME/.local/bin"
 export GOPATH="$HOME/.local/go"
 export GOBIN="$GOPATH/bin"
@@ -61,6 +70,7 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # 100ms
 export KEYTIMEOUT=10
+export EDITOR="nvim"
 
 # FZF
 export FZF_DEFAULT_COMMAND="fd -t f --no-ignore"
@@ -77,6 +87,14 @@ alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
 
 # easily check a command
 alias cmd="command -v"
+# command for listing path candidates.
+_fzf_compgen_path() {
+  fdfind --hidden --follow --exclude ".git" . "$1"
+}
+# Use fdfind to generate the list for directory completion
+_fzf_compgen_dir() {
+  fdfind --type d --hidden --follow --exclude ".git" . "$1"
+}
 
 alias l="ls"
 alias ll="exa -l"
@@ -91,6 +109,13 @@ alias rm="rm -i"
 alias ,ecd="emacs --daemon"
 alias ,ec="emacsclient -t"
 alias ,emacs="emacsclient -c -a emacs"
+alias k="kubectl"
 
 alias sublime_merge="/opt/sublime_merge/sublime_merge"
+alias python="python3"
+
+
+# format prompt
+PROMPT="%{$fg[cyan]%}%1~ %(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
+PROMPT+='%{$reset_color%}'
 

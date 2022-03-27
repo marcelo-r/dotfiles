@@ -9,7 +9,7 @@ Plug 'SirVer/ultisnips'
 " file explorer 
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
-"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 " git support
@@ -30,7 +30,7 @@ Plug 'tpope/vim-surround'
 Plug 'Yggdroot/indentLine'
 """ langs
 " python
-"Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 Plug 'psf/black', { 'branch': 'stable', 'for': 'python' }
 " golang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -80,9 +80,11 @@ set sessionoptions+=globals
 " Showing line numbers and length
 set number  " show line numbers
 set tw=79   " width of document (used by gd)
-set nowrap  " don't automatically wrap on load
+"set nowrap  " don't automatically wrap on load
+set wrap  " automatically wrap on load
 set fo-=t   " don't automatically wrap text when typing
 set colorcolumn=80,120
+"set colorcolumn=100
 highlight ColorColumn ctermbg=233
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -99,7 +101,7 @@ set nowritebackup
 " Give more space for displaying messages.
 set cmdheight=2
 " shorter updatetime for better UX
-set updatetime=300
+set updatetime=200
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
@@ -143,7 +145,7 @@ endtry
 " remove spacebar mapping and make it leader
 nnoremap <SPACE> <Nop>
 let mapleader=" "
-let maplocalleader=","
+let maplocalleader="\\"
 
 " easier command input, especially for keymaps with bad : location
 " ; will work like :
@@ -156,6 +158,17 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <leader>w <C-W>
+" easier tab navigation
+nmap <leader>1 <esc>1gt
+nmap <leader>2 <esc>2gt
+nmap <leader>3 <esc>3gt
+nmap <leader>4 <esc>4gt
+nmap <leader>5 <esc>5gt
+nmap <leader>6 <esc>6gt
+nmap <leader>7 <esc>7gt
+nmap <leader>8 <esc>8gt
+nmap <leader>9 <esc>9gt
+nmap <leader>0 <esc>0gt
 
 "Highlights code for multiple indents without reselecting
 vnoremap < <gv
@@ -164,7 +177,21 @@ vnoremap > >gv
 " redraws the screen and removes any highlighting.
 nnoremap <leader>l :nohl<CR><C-S-l>
 
+nnoremap <leader>b <esc>:buffers<CR>
+
 """ plugins configuration
+
+" open NERDTree on starup when no file specified
+function! StartUp()
+    if 0 == argc()
+        NERDTree
+    end
+endfunction
+autocmd VimEnter * call StartUp()
+
+let g:NERDTreeWinPos = "right"
+let NERDTreeShowHidden=1
+let NERDTreeIgnore=["\.git$", "\.vscode", "bin$"]
 
 " avoid conflict between ALE and coc-vim
 let g:ale_disable_lsp = 1
@@ -172,7 +199,8 @@ let g:ale_sign_column_always = 1
 
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
-let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded', 'highlight': 'Identifier',  }}
+"let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded', 'highlight': 'Identifier',  }}
+let g:fzf_layout = { 'down': '~40%' }
 
 let g:gitgutter_enabled = 1
 let g:gitgutter_signs = 1
@@ -188,59 +216,15 @@ let g:airline#extensions#tabline#show_tab_count = 0
 let g:airline#extensions#tabline#buffers_label = 'b'
 let g:airline#extensions#tabline#tabs_label = 't'
 
-let g:go_code_completion_enabled = 0
-let g:go_info_mode='gopls'
-let g:go_def_mode='gopls'
-let g:go_doc_popup_window = 1
-let g:go_metalinter_command = 'golangci-lint'
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_enabled = [ 'bodyclose', 'deadcode', 'depguard', 'dogsled', 'dupl',
-    		\ 'errcheck', 'exhaustive', 'gochecknoinits', 'goconst', 'gocritic',
-    		\ 'gocyclo', 'gofmt', 'goimports', 'revive', 'gomnd',
-    		\ 'goprintffuncname', 'gosec', 'gosimple', 'govet', 'ineffassign',
-    		\ 'lll', 'misspell', 'nakedret', 'noctx', 'nolintlint',
-    		\ 'rowserrcheck', 'exportloopref', 'staticcheck', 'structcheck', 'stylecheck',
-    		\ 'typecheck', 'unconvert', 'unparam', 'unused', 'varcheck',
-    		\ 'asciicheck', 'gocognit', 'godox', 'goerr113', 'nestif',
-    		\ 'prealloc', 'whitespace']
-let g:go_metalinter_autosave_enabled = ['vet', 'revive', 'errcheck', 'deadcode',
-	\ 'ineffassign', 'lll', 'staticcheck', 'prealloc', 
-	\ 'gomnd', 'goconst', 'gosec']
-"let g:go_metalinter_deadline = "3s"
-"let g:go_list_height = 5 
-let g:go_list_type = "locationlist"
-let g:go_test_show_name = 1
-let g:go_jump_to_error = 0
-let g:go_fmt_autosave = 1
-" syntax highlight
-let g:go_highlight_structs = 1 
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_types = 1
-"let g:go_highlight_build_constraints = 1
-"let g:go_highlight_function_parameters = 0
-"let g:go_highlight_function_calls = 1
-"let g:go_highlight_fields = 1
-"let g:go_highlight_extra_types = 1
+let g:indentLine_enabled = 0
+"let g:indentLine_char_list = ['⎸']
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_setColors = 0
+set list lcs=tab:\|\ 
 
-let g:indentLine_char_list = ['⎸']
-
-" Utilsnips
 let g:UltiSnipsExpandTrigger="<C-l>"
 
 """ plugin mappings - <leader>p
-nmap <leader>1 <esc>1gt
-nmap <leader>2 <esc>2gt
-nmap <leader>3 <esc>3gt
-nmap <leader>4 <esc>4gt
-nmap <leader>5 <esc>5gt
-nmap <leader>6 <esc>6gt
-nmap <leader>7 <esc>7gt
-nmap <leader>8 <esc>8gt
-nmap <leader>9 <esc>9gt
-nmap <leader>0 <esc>0gt
-
 " coc.nvim
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -248,7 +232,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 " Symbol renaming.
-nmap <F2> <Plug>(coc-rename)
+nmap <leader>r <Plug>(coc-rename)
 
 " Navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -262,32 +246,35 @@ else
   inoremap <silent><expr> <c-@> coc#refresh()
 endif
 
-" completion on enter
+" completion confirm on enter
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" completion trigger and confirmation using tab
-"inoremap <silent><expr> <TAB>
-"  \ pumvisible() ? coc#_select_confirm() :
-"  \ coc#expandableOrJumpable() ?
-"  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"  \ <SID>check_back_space() ? "\<TAB>" :
-"  \ coc#refresh()
 
+" Use tab to trigger completion and navigate to next item
 function! s:check_back_space() abort
   let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+  return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-"let g:coc_snippet_next = '<tab>'
+"inoremap <silent><expr> <CR>
+"  \ pumvisible() ? coc#_select_confirm() :
+"  \ coc#expandableOrJumpable() ?
+"  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"  \ <SID>check_back_space() ? "\<CR>" :
+"  \ coc#refresh()
+"
+"function! s:check_back_space() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
+"
+"let g:coc_snippet_next = '<CR>'
 
 " Remap <C-f> and <C-b> for scroll float windows/popups. (optional)
 "if has('nvim-0.4.0') || has('patch-8.2.0750')
@@ -304,12 +291,15 @@ nmap <leader>ff <esc>:FzfFiles<CR>
 nmap <leader>fe <esc>:FzfGFiles<CR>
 nmap <leader>fc <esc>:FzfCommands<CR>
 nmap <leader>fs <esc>:FzfLines<CR>
-nmap <leader>bb <esc>:FzfBuffers<CR>
+nmap <leader>fb <esc>:FzfBuffers<CR>
+nmap <leader>fr <esc>:FzfRg<CR>
 
-nnoremap <leader>pn :NERDTreeToggle<CR>
 nnoremap <leader>pm :MinimapToggle<CR>
-nnoremap <leader>pf :Black<CR>
+"nnoremap <leader>pf :Black<CR>
 nnoremap <leader>pa :ALEFix<CR>
+
+xmap <leader>pf  <Plug>(coc-format-selected)
+nmap <leader>pf  <Plug>(coc-format-selected)
 
 " custom commands
 " Add `:Format` command to format current buffer.
@@ -375,6 +365,36 @@ if has('nvim')
     augroup END
 endif
 
+nnoremap <leader>pn :NERDTreeToggle<CR>
+" sync nerdtree
+" Check if NERDTree is open or active
+function! IsNERDTreeOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+    wincmd p
+  endif
+endfunction
+nnoremap <silent> <leader>k :bnext<CR>:call SyncTree()<CR>
+nnoremap <silent> <leader>j :bprev<CR>:call SyncTree()<CR>
+nnoremap <silent> <F12> :NERDTreeToggle<cr><c-w>l:call SyncTree()<cr><c-w>h
+nnoremap <silent> <leader>pn :NERDTreeToggle<cr><c-w>l:call SyncTree()<cr><c-w>h
+
+" Highlight currently open buffer in NERDTree
+autocmd BufRead * call SyncTree()
+
 " enable when using _ as terminal cursor so vim can reset it on exit
 au VimLeave * set guicursor=a:hor100
 
+" spellcheck
+" use F11 to toggle spellcheck
+" use <C-x>s in insert mode to show suggestions
+set spelllang=en
+set spellsuggest=best,9
+nnoremap <silent> <F11> :set spell!<cr>
+inoremap <silent> <F11> <C-O>:set spell!<cr>

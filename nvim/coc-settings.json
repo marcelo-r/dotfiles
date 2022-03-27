@@ -7,6 +7,9 @@
   "python.jediEnabled": false,
   "python.pipenvPath": "pipenv",
   "python.venvPath": "/home/mrc/.virtualenvs",
+  "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black",
+  "coc.preferences.formatOnType": true,
 
   "elixir.pathToElixirLS": "~/.elixir-ls/release/language_server.sh"
 }
