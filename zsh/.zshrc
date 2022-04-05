@@ -28,9 +28,8 @@ plugins=(
 	dnf
 	extract
 	git
-	github
 	golang
-	lein
+	kubectl
 	mix
 	python
 	vi-mode
@@ -49,7 +48,7 @@ source /usr/share/fzf/shell/key-bindings.zsh
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 eval "$(direnv hook zsh)"
-eval "$(pipenv --completion)"
+#eval "$(pipenv --completion)"
 # must be in this order for key bindings to work
 #eval "$(starship init zsh)"
 
@@ -103,13 +102,15 @@ alias t="tree -d"
 alias nv="neovim"
 alias dockerps="docker ps --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
 alias dockerpsa="docker ps -a --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
+alias compose="docker-compose"
 alias rm="rm -i"
+alias k="kubectl"
+alias rm="trash -i"
 #alias rg="rg -i"
 
 alias ,ecd="emacs --daemon"
 alias ,ec="emacsclient -t"
 alias ,emacs="emacsclient -c -a emacs"
-alias k="kubectl"
 
 alias sublime_merge="/opt/sublime_merge/sublime_merge"
 alias python="python3"

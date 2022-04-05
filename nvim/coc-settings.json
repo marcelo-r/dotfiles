@@ -1,4 +1,22 @@
 {
+	"coc.preferences.formatOnSaveFiletypes": [
+		"json",
+		"clojure",
+		"python"
+	],
+	"languageserver": {
+		"clojure-lsp": {
+			"command": "bash",
+			"args": ["-c", "clojure-lsp"],
+			"filetypes": ["clojure"],
+			"rootPatterns": ["project.clj", "deps.edn"],
+			"addittionalSchemes": ["jar", "zipfile"],
+			"trace.server": "verbose",
+			"initializationOptions": {
+				"ignore-classpath-directories": true
+			}
+		}
+	},
   "diagnostic.displayByAle": true,
 
   "git.signOffset": 150,

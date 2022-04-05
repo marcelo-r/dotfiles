@@ -1,64 +1,74 @@
-"Automatically reloads neovim configuration file on write (w)
-autocmd! bufwritepost init.vim source %
-
 call plug#begin('~/.local/share/nvim/plugged')
+
 """ base for IDE-like XP
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'dense-analysis/ale'
-Plug 'SirVer/ultisnips'
+Plug 'sheerun/vim-polyglot'							" sytanx highlight
+Plug 'neoclide/coc.nvim', {'branch': 'release'}		" intellisense
+Plug 'dense-analysis/ale'							" linters
+Plug 'SirVer/ultisnips'								" snippets
 " file explorer 
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'scrooloose/nerdtree'							" sidebar explorer
+Plug 'ryanoasis/vim-devicons'						" icons for nerdtree
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'jremmen/vim-ripgrep'
+Plug 'jremmen/vim-ripgrep'							" ripgrep plugin
 " git support
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-" status line
+Plug 'tpope/vim-fugitive'							" git integration
+Plug 'airblade/vim-gitgutter'						" show diff on buffer
+Plug 'Xuyuanp/nerdtree-git-plugin'					" git icons for nerdtree
+" status line (choose one of these)
 Plug 'vim-airline/vim-airline'
 "Plug 'itchyny/lightline.vim'
 """ utils
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim' "				
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
-Plug 'machakann/vim-highlightedyank'
-" auto close () [] {} '' etc
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
-Plug 'Yggdroot/indentLine'
-""" langs
+Plug 'machakann/vim-highlightedyank'				" highlight copied text
+Plug 'jiangmiao/auto-pairs'							" auto close () [] {} '' etc
+Plug 'luochen1990/rainbow'							" rainbow parenteses
+Plug 'tpope/vim-surround'							" surround phrases with stuff
+Plug 'Yggdroot/indentLine'							" show indetation level
+
+""" languages support
 " python
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 Plug 'psf/black', { 'branch': 'stable', 'for': 'python' }
 " golang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sebdah/vim-delve'
+" clojure
+Plug 'Olical/conjure'
+Plug 'tpope/vim-dispatch'
+Plug 'clojure-vim/vim-jack-in'
+let g:rainbow_active = 1
+" rust
+Plug 'rust-lang/rust.vim'
 " yaml 
 Plug 'stephpy/vim-yaml'
 "docker
 Plug 'ekalinin/dockerfile.vim'
 Plug 'Konfekt/FastFold'
+Plug 'andrewstuart/vim-kubernetes'
 
 """ optionals
 " themes 
 Plug 'sainnhe/sonokai'
 let g:sonokai_diagnostic_text_highlight = 1
 Plug 'joshdick/onedark.vim'
-" minimap
+
+" only in neovim:
 if has('nvim-0.5')
+	Plug 'radenling/vim-dispatch-neovim'
+	" minimap
     Plug 'wfxr/minimap.vim'
     let g:minimap_width = 10
     let g:minimap_git_colors = 1
 endif
-"Plug 'jeffkreeftmeijer/vim-numbertoggle'
-"set number relativenumber
-"Plug 'ervandew/supertab'
-"let g:SuperTabDefaultCompletionType = "<c-n>"
 Plug 'szw/vim-smartclose'
 
 call plug#end()
+
+"Automatically reloads neovim configuration file on write (w)
+autocmd! bufwritepost init.vim source %
 
 set encoding=utf-8
 " allow buffers to open in background
@@ -80,11 +90,9 @@ set sessionoptions+=globals
 " Showing line numbers and length
 set number  " show line numbers
 set tw=79   " width of document (used by gd)
-"set nowrap  " don't automatically wrap on load
-set wrap  " automatically wrap on load
+set nowrap  " don't automatically wrap on load
 set fo-=t   " don't automatically wrap text when typing
 set colorcolumn=80,120
-"set colorcolumn=100
 highlight ColorColumn ctermbg=233
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -149,8 +157,8 @@ let maplocalleader="\\"
 
 " easier command input, especially for keymaps with bad : location
 " ; will work like :
-nnoremap ; :
-vnoremap ; :
+"nnoremap ; :
+"vnoremap ; :
 
 " easier navigation
 nnoremap <C-J> <C-W><C-J>
@@ -222,6 +230,7 @@ let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setColors = 0
 set list lcs=tab:\|\ 
 
+" Utilsnips
 let g:UltiSnipsExpandTrigger="<C-l>"
 
 """ plugin mappings - <leader>p
@@ -255,6 +264,10 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -294,6 +307,7 @@ nmap <leader>fs <esc>:FzfLines<CR>
 nmap <leader>fb <esc>:FzfBuffers<CR>
 nmap <leader>fr <esc>:FzfRg<CR>
 
+nnoremap <leader>pn :NERDTreeToggle<CR>
 nnoremap <leader>pm :MinimapToggle<CR>
 "nnoremap <leader>pf :Black<CR>
 nnoremap <leader>pa :ALEFix<CR>
