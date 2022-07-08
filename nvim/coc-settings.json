@@ -2,7 +2,9 @@
 	"coc.preferences.formatOnSaveFiletypes": [
 		"json",
 		"clojure",
-		"python"
+		"python",
+		"json",
+		"yaml"
 	],
 	"languageserver": {
 		"clojure-lsp": {

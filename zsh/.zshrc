@@ -8,8 +8,6 @@ export ZSH="/home/$USER/.oh-my-zsh"
 . $HOME/.asdf/asdf.sh
 fpath=(${ASDF_DIR}/completions $fpath)
 
-autoload -Uz compinit && compinit -y
-
 ZSH_THEME="robbyrussell"
 
 # display red dots whilst waiting for completion.
@@ -30,7 +28,7 @@ plugins=(
 	git
 	golang
 	kubectl
-	mix
+	rust
 	python
 	vi-mode
 )
@@ -38,6 +36,7 @@ VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
 
 source $ZSH/oh-my-zsh.sh
 
+#autoload -Uz compinit && compinit -y
 # user configuration
 # needed for fzf and vi-mode to coexist without problems
 autoload -U compinit
@@ -48,9 +47,8 @@ source /usr/share/fzf/shell/key-bindings.zsh
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 
 eval "$(direnv hook zsh)"
-#eval "$(pipenv --completion)"
-# must be in this order for key bindings to work
-#eval "$(starship init zsh)"
+source $HOME/.local/kind/completion
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 # env ars
@@ -71,21 +69,19 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export KEYTIMEOUT=10
 export EDITOR="nvim"
 
-# FZF
-export FZF_DEFAULT_COMMAND="fd -t f --no-ignore"
-export FZF_CTRL_T_COMMAND="fd --no-ignore --exclude ~/Games"
-export FZF_COMPLETION_TRIGGER="~~"
-export FZF_ALT_C_COMMAND="fd -t d --exclude ~/Games . $HOME"
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-
 export PIPENV_VENV_IN_PROJECT=1
 
 # aliases
 alias zshconfig="$EDITOR ~/.zshrc"
 alias ohmyzsh="$EDITOR ~/.oh-my-zsh"
 
+# FZF
+export FZF_DEFAULT_COMMAND="fd -t f --no-ignore"
+export FZF_CTRL_T_COMMAND="fd --no-ignore --exclude ~/Games"
+export FZF_COMPLETION_TRIGGER="~~"
+export FZF_ALT_C_COMMAND="fd -t d --exclude ~/Games . $HOME"
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 # easily check a command
-alias cmd="command -v"
 # command for listing path candidates.
 _fzf_compgen_path() {
   fdfind --hidden --follow --exclude ".git" . "$1"
@@ -95,17 +91,17 @@ _fzf_compgen_dir() {
   fdfind --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-alias l="ls"
-alias ll="exa -l"
-alias la="exa -la"
+alias cmd="command -v"
+alias l="lsd"
 alias t="tree -d"
-alias nv="neovim"
-alias dockerps="docker ps --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
-alias dockerpsa="docker ps -a --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
-alias compose="docker-compose"
 alias rm="rm -i"
-alias k="kubectl"
 alias rm="trash -i"
+
+alias nv="neovim"
+alias dps="docker ps --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
+alias dpsa="docker ps -a --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
+alias dc="docker-compose"
+alias k="kubectl"
 #alias rg="rg -i"
 
 alias ,ecd="emacs --daemon"

@@ -10,19 +10,13 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # Mod1 = Alt
-# Mod4 = Super (Windows Key) / Command (Mac)
+# Mod4 = Super (Windows Key)
 set $mod Mod4
 
 # set microsoft key
 set $super Mod1
 bindsym $super+Home exec setxkbmap us intl
 bindsym $super+End exec setxkbmap br
-
-# mod1 is ALT
-set $alt_opt Mod1
-bindsym $alt_opt+Prior exec setxkbmap us
-bindsym $alt_opt+Home exec setxkbmap us intl # Alt+Home for 
-bindsym $alt_opt+End exec setxkbmap br
 
 # set monitors
 set $laptop eDP-1-1
@@ -97,10 +91,10 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -126,9 +120,9 @@ workspace 2 output $hdmi $laptop
 workspace 3 output $hdmi $laptop
 workspace 4 output $hdmi $laptop
 workspace 5 output $hdmi $laptop
-workspace 6 output $hdmi $laptop
-workspace 7 output $hdmi $laptop
-workspace 8 output $hdmi $laptop
+workspace 6 output $laptop $hdmi
+workspace 7 output $laptop $hdmi
+workspace 8 output $laptop $hdmi
 workspace 9 output $laptop $hdmi
 workspace 10 output $laptop $hdmi
 
@@ -207,13 +201,13 @@ bindsym $mod+r mode "resize"
 for_window [class=".*"] border pixel 1 
 for_window [class="(alacritty|term)"] border pixel 3
 
-# i3-gaps
+# gaps
 #for_window [class=".*"] border pixel 0 
 #gaps inner 8
 #gaps outer 2
 
 #smart_gaps on
-#smart_borders on
+#smart_borders no_gaps
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -226,7 +220,6 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    #tray_output primary
     tray_output $hdmi
     #tray_output $laptop
     position bottom
@@ -242,10 +235,10 @@ bar {
 	    separator #000000
 	#
 	#                       #<border> <bg>  <text>
-	#    focused_workspace  #ff0000 #000000 #ffffff
-	#    active_workspace   #333333 #5f676a #ffffff
-	#    inactive_workspace #333333 #222222 #888888
-	#    urgent_workspace   #2f343a #900000 #ffffff
+	    focused_workspace  #96B6C0 #2E4460 #ffffff
+	    active_workspace   #62BBC1 #010400 #ffffff
+	    inactive_workspace #333333 #222222 #888888
+	    urgent_workspace   #2f343a #900000 #ffffff
 	}
 }
 
@@ -263,7 +256,7 @@ for_window [class="Lxappearance"] floating enable sticky enable border normal
 for_window [class="GParted"] floating enable border normal
 
 workspace_auto_back_and_forth yes
-#bindsym $mod+\' workspace back_and_forth
+bindsym $mod+Tab workspace back_and_forth
 
 bindsym $mod+Shift+s sticky toggle
 # put YouTube into fullscreen and execute this for media mode
@@ -271,7 +264,7 @@ bindsym $mod+y fullscreen disable; floating enable; resize set 600 400; sticky e
 
 ### startup
 # keymap
-exec --no-startup-id setxkbmap br intl
+exec --no-startup-id setxkbmap us intl
 # setup monitors
 exec --no-startup-id screen-setup
 # network manager
@@ -285,8 +278,6 @@ exec --no-startup-id blueman-applet
 ## nvidia force enable composition
 exec --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
 #exec --no-startup-id compton --backend glx --paint-on-overlay --vsync opengl-swc --no-fading-openclose
-
-exec --no-startup-id compton --config $HOME/.compton.conf
 
 # lock screen
 bindsym $mod+Shift+Escape exec i3lock -e -c 111111
@@ -310,7 +301,7 @@ bindsym $mod+Pause mode "$mode_system"
 bindsym $mod+Delete mode "$mode_system"
 
 # print screen
-bindsym Print exec --no-startup-id xfce4-screenshooter
+bindsym Print exec --no-startup-id gnome-screenshot -ia
 bindsym Ctrl+Print exec --no-startup-id deepin-screenshot 
 #bindsym Print exec --no-startup-id gnome-screenshot -f "$HOME/Pictures/screenshots/$(date).jpg"
 
@@ -332,19 +323,17 @@ bindsym $mod+Shift+l move right
 
 # cycle focus
 # use left or right oposite to the extra monitor
-bindsym $mod+Tab focus left
-
-# Multimedia keys
-# Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+#bindsym $mod+Tab focus left
 
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym XF86MonBrightnessDon exec xbacklight -dec 20 # decrease screen brightness
 
 # Media player controls
+#bindsym XF86AudioPlay exec playerctl play
+#bindsym XF86AudioPause exec playerctl pause
+#bindsym XF86AudioNext exec playerctl next
+#bindsym XF86AudioPrev exec playerctl previous
 
 # Multimedia keys
 # Use pactl to adjust volume in PulseAudio.
@@ -354,8 +343,7 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-
-bindsym $mod+Shift+P exec --no-startup-id screenfix
+bindsym $mod+Shift+P exec --no-startup-id screen-setup
 
 #set	$background	#272827
 #set	$foreground	#657b83

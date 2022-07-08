@@ -1,3 +1,10 @@
+" configure to use tabs for indentation.
+set tabstop=4 
+set softtabstop=4 
+set shiftwidth=4 
+set noexpandtab 
+set smarttab
+
 let g:go_code_completion_enabled = 0
 
 let g:go_info_mode='gopls'

@@ -90,16 +90,43 @@ scrolling:
 
 # Font configuration
 font:
+  # Normal (roman) font face
   normal:
+    # Font family
+    #
+    # Default:
+    #   - (macOS) Menlo
+    #   - (Linux/BSD) monospace
+    #   - (Windows) Consolas
+    #family: monospace
     family: FiraCode Nerd Font
     style: Regular
+
+  # Bold font face
   bold:
+    # Font family
+    #
+    # If the bold family is not specified, it will fall back to the
+    # value specified for the normal font.
     family: FiraCode Nerd Font
     style: Bold
+
+
+  # Italic font face
   italic:
+    # Font family
+    #
+    # If the italic family is not specified, it will fall back to the
+    # value specified for the normal font.
     family: FiraCode Nerd Font
     style: Italic
+
+  # Bold italic font face
   bold_italic:
+    # Font family
+    #
+    # If the bold italic family is not specified, it will fall back to the
+    # value specified for the normal font.
     family: FiraCode Nerd Font
     style: Bold Italic
 
@@ -264,7 +291,7 @@ cursor:
   #   - ▇ Block
   #   - _ Underline
   #   - | Beam
-  style: Underline
+  style: underline
 
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
@@ -288,6 +315,14 @@ shell:
     - --login
     - -c
     - 'tmux attach || tmux -u'
+  #program: /usr/bin/tmux
+  #args:
+  #  - new
+  #  - -A
+  #  - -s main
+
+#  args:
+#    - --login
 
 # Startup directory
 #

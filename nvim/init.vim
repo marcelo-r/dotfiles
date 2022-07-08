@@ -24,9 +24,12 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 Plug 'machakann/vim-highlightedyank'				" highlight copied text
 Plug 'jiangmiao/auto-pairs'							" auto close () [] {} '' etc
-Plug 'luochen1990/rainbow'							" rainbow parenteses
+"Plug 'luochen1990/rainbow'							" rainbow parenteses
 Plug 'tpope/vim-surround'							" surround phrases with stuff
 Plug 'Yggdroot/indentLine'							" show indetation level
+
+" Github Copilot
+Plug 'github/copilot.vim'
 
 """ languages support
 " python
@@ -48,6 +51,8 @@ Plug 'stephpy/vim-yaml'
 Plug 'ekalinin/dockerfile.vim'
 Plug 'Konfekt/FastFold'
 Plug 'andrewstuart/vim-kubernetes'
+" javascript
+Plug 'pangloss/vim-javascript'
 
 """ optionals
 " themes 
@@ -118,7 +123,20 @@ set splitbelow
 set splitright
 
 " configure tabs spaces indetation
-set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab smarttab
+" tabstop:          Width of tab character
+" softtabstop:      Fine tunes the amount of white space to be added
+" shiftwidth        Determines the amount of whitespace to add in normal mode
+" expandtab:        When this option is enabled, vi will use spaces instead of tabs
+set tabstop=8 
+set softtabstop=4 
+set shiftwidth=4 
+set noexpandtab 
+"set expandtab
+set smarttab
+set autoindent
+" display tab and show them as the character |
+set list
+set lcs=tab:\|\ 
 
 " Enable filetype plugins
 filetype plugin on
@@ -190,12 +208,12 @@ nnoremap <leader>b <esc>:buffers<CR>
 """ plugins configuration
 
 " open NERDTree on starup when no file specified
-function! StartUp()
-    if 0 == argc()
-        NERDTree
-    end
-endfunction
-autocmd VimEnter * call StartUp()
+"function! StartUp()
+"    if 0 == argc()
+"        NERDTree
+"    end
+"endfunction
+"autocmd VimEnter * call StartUp()
 
 let g:NERDTreeWinPos = "right"
 let NERDTreeShowHidden=1
@@ -224,11 +242,12 @@ let g:airline#extensions#tabline#show_tab_count = 0
 let g:airline#extensions#tabline#buffers_label = 'b'
 let g:airline#extensions#tabline#tabs_label = 't'
 
-let g:indentLine_enabled = 0
+let g:indentLine_enabled = 1
 "let g:indentLine_char_list = ['⎸']
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+"let g:indentLine_char_list = ['|']
+let g:indentLine_char_list = ['¦']
+"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setColors = 0
-set list lcs=tab:\|\ 
 
 " Utilsnips
 let g:UltiSnipsExpandTrigger="<C-l>"
@@ -408,7 +427,7 @@ au VimLeave * set guicursor=a:hor100
 " spellcheck
 " use F11 to toggle spellcheck
 " use <C-x>s in insert mode to show suggestions
-set spelllang=en
-set spellsuggest=best,9
-nnoremap <silent> <F11> :set spell!<cr>
-inoremap <silent> <F11> <C-O>:set spell!<cr>
+"set spelllang=en
+"set spellsuggest=best,9
+"nnoremap <silent> <F11> :set spell!<cr>
+"inoremap <silent> <F11> <C-O>:set spell!<cr>
