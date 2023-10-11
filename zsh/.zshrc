@@ -27,6 +27,7 @@ plugins=(
 	extract
 	git
 	golang
+	helm
 	kubectl
 	rust
 	python
@@ -93,26 +94,28 @@ _fzf_compgen_dir() {
 
 alias cmd="command -v"
 alias l="lsd"
+alias ll="lsd -l"
 alias t="tree -d"
 alias rm="rm -i"
 alias rm="trash -i"
+alias fnmodeoff="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
+alias fnmodeon="echo 1 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 
 alias nv="neovim"
-alias dps="docker ps --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
-alias dpsa="docker ps -a --format '{{.ID}}\t{{.Names}}  \t{{.Size}}   \t{{.Ports}}  \t{{.Status}}'"
+alias dps="docker ps"
 alias dc="docker-compose"
 alias k="kubectl"
+alias km="minikube kubectl --"
 #alias rg="rg -i"
-
-alias ,ecd="emacs --daemon"
-alias ,ec="emacsclient -t"
-alias ,emacs="emacsclient -c -a emacs"
 
 alias sublime_merge="/opt/sublime_merge/sublime_merge"
 alias python="python3"
 
+alias kus="setxkbmap us intl"
+alias kbr="setxkbmap br"
 
 # format prompt
 PROMPT="%{$fg[cyan]%}%1~ %(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
 PROMPT+='%{$reset_color%}'
 
+eval "$(minikube completion zsh)"

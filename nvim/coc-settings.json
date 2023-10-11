@@ -1,35 +1,48 @@
 {
+	"diagnostic.errorSign": "✘",
+	"diagnostic.infoSign": "i",
+	"diagnostic.displayByAle": true,
 	"coc.preferences.formatOnSaveFiletypes": [
 		"json",
 		"clojure",
 		"python",
 		"json",
-		"yaml"
+		"yaml",
+		"rust"
 	],
 	"languageserver": {
 		"clojure-lsp": {
 			"command": "bash",
-			"args": ["-c", "clojure-lsp"],
-			"filetypes": ["clojure"],
-			"rootPatterns": ["project.clj", "deps.edn"],
-			"addittionalSchemes": ["jar", "zipfile"],
+			"args": [
+				"-c",
+				"clojure-lsp"
+			],
+			"filetypes": [
+				"clojure"
+			],
+			"rootPatterns": [
+				"project.clj",
+				"deps.edn"
+			],
+			"addittionalSchemes": [
+				"jar",
+				"zipfile"
+			],
 			"trace.server": "verbose",
 			"initializationOptions": {
 				"ignore-classpath-directories": true
 			}
 		}
 	},
-  "diagnostic.displayByAle": true,
-
-  "git.signOffset": 150,
-  "git.enableGutters": true,
-
-  "python.jediEnabled": false,
-  "python.pipenvPath": "pipenv",
-  "python.venvPath": "/home/mrc/.virtualenvs",
-  "python.linting.pylintEnabled": true,
-  "python.formatting.provider": "black",
-  "coc.preferences.formatOnType": true,
-
-  "elixir.pathToElixirLS": "~/.elixir-ls/release/language_server.sh"
+	"diagnostic.displayByAle": true,
+	"git.signOffset": 150,
+	"git.enableGutters": true,
+	"python.linting.pylintEnabled": true,
+	"python.formatting.provider": "black",
+	"coc.preferences.formatOnType": true,
+	"rust-analyzer.serverPath": "/usr/local/bin/rust-analyzer",
+	"rust-analyzer.hover.documentation.enable": true,
+	"rust-analyzer.signatureInfo.documentation.enable": true,
+	"rust-analyzer.trace.server": "verbose",
+	"rust-analyzer.enable": true
 }

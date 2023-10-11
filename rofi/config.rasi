@@ -2,7 +2,7 @@ configuration {
 	modi: "drun,window,run";
 	width: 25;
 	show-icons: true;
-	lines: 10;
+	lines: 12;
 	fake-transparency: true;
 	sidebar-mode: true;
 	font: "hack 11";
@@ -15,4 +15,3 @@ configuration {
 	color-urgent: "#222222, #b1b4b3, #222222, #77003d, #b1b4b3";
 }
 
-@theme "glue_pro_blue"

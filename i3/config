@@ -15,12 +15,14 @@ set $mod Mod4
 
 # set microsoft key
 set $super Mod1
-bindsym $super+Home exec setxkbmap us intl
-bindsym $super+End exec setxkbmap br
+bindsym $super+Shift+PageUp exec setxkbmap us intl
+bindsym $super+Shift+PageDown exec setxkbmap br
 
 # set monitors
 set $laptop eDP-1-1
 set $hdmi HDMI-0
+
+bindsym $mod+Shift+P exec --no-startup-id screen-setup
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -40,8 +42,8 @@ hide_edge_borders both
 floating_modifier $mod
 
 # start a terminal
+bindsym $mod+Shift+Return exec kitty /bin/sh --login -c tmux attach || tmux -u
 bindsym $mod+Return exec alacritty 
-bindsym $mod+Shift+Return exec kitty 
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -202,12 +204,12 @@ for_window [class=".*"] border pixel 1
 for_window [class="(alacritty|term)"] border pixel 3
 
 # gaps
-#for_window [class=".*"] border pixel 0 
-#gaps inner 8
-#gaps outer 2
+for_window [class=".*"] border pixel 0 
+gaps inner 6
+gaps outer 2
 
-#smart_gaps on
-#smart_borders no_gaps
+smart_gaps on
+smart_borders no_gaps
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -220,37 +222,41 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    tray_output $hdmi
+    tray_output $laptop
     #tray_output $laptop
     position bottom
     #mode hide
-	modifier $mod
-	status_command i3status
+    modifier $mod
+    status_command i3status
     #status_command /bin/i3status-rs /home/marcelo/.config/i3status-rust/config.toml
-	font pango: FiraCode 13
+    font pango:FiraCode NerdFont 14
 
-	colors {
-	#    background #000000
-	    statusline #ffff00
-	    separator #000000
-	#
-	#                       #<border> <bg>  <text>
-	    focused_workspace  #96B6C0 #2E4460 #ffffff
-	    active_workspace   #62BBC1 #010400 #ffffff
-	    inactive_workspace #333333 #222222 #888888
-	    urgent_workspace   #2f343a #900000 #ffffff
-	}
+    colors {
+    #    background #000000
+	statusline #ffff00
+	separator #000000
+    #
+    #                       #<border> <bg>  <text>
+	focused_workspace  #96B6C0 #2E4460 #ffffff
+	active_workspace   #62BBC1 #010400 #ffffff
+	inactive_workspace #333333 #222222 #888888
+	urgent_workspace   #2f343a #900000 #ffffff
+    }
 }
+#exec --no-startup-id xfce4-panel --disable-wm-check
+bindsym $mod+m bar mode toggle
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="task_dialog"] floating enable
 for_window [window_role="Preferences"] floating enable
+for_window [window_role="About"] floating enable
 
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 
 for_window [class="Pavucontrol"] floating enable
+for_window [class="Pavucontrol"] resize set 900 800
 for_window [class="org.gnome.Software"] floating enable
 for_window [class="Lxappearance"] floating enable sticky enable border normal
 for_window [class="GParted"] floating enable border normal
@@ -269,15 +275,17 @@ exec --no-startup-id setxkbmap us intl
 exec --no-startup-id screen-setup
 # network manager
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill $HOME/Pictures/wallpapers/_bg
+exec --no-startup-id feh --bg-fill $HOME/Pictures/Wallpapers/bg.jpg
 # bluetooth
 exec --no-startup-id blueman-applet
 # vpn
 #exec --no-startup-id "/opt/Mullvad\ VPN/mullvad-vpn %U" 
 
 ## nvidia force enable composition
+# nvidia driver handles vsync
+# compton handles 
 exec --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
-#exec --no-startup-id compton --backend glx --paint-on-overlay --vsync opengl-swc --no-fading-openclose
+#exec --no-startup-id compton -cCzG -t-3 -l-5 -r4 --config /dev/null --backend xrender --unredir-if-possible
 
 # lock screen
 bindsym $mod+Shift+Escape exec i3lock -e -c 111111
@@ -300,6 +308,22 @@ mode "$mode_system" {
 bindsym $mod+Pause mode "$mode_system"
 bindsym $mod+Delete mode "$mode_system"
 
+## Manual management of external displays
+# Set the shortcuts and what they do
+set $mode_display Ext Screen (v) VGA ON, (h) HDMI ON, (x) VGA OFF, (y) HDMI OFF
+mode "$mode_display" {
+    bindsym v exec --no-startup-id xrandr --output eDP-1 --auto --right-of LVDS1, mode "default"
+    bindsym h exec --no-startup-id xrandr --output HDMI-0 --auto --primary --right-of eDP-1-1, mode "default"
+    bindsym x exec --no-startup-id xrandr --output eDP-1 --auto --off, mode "default"
+    bindsym y exec --no-startup-id xrandr --output HDMI-0 --auto --off, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+# Declare here the shortcut to bring the display selection menu
+bindsym $mod+x mode "$mode_display"
+
 # print screen
 bindsym Print exec --no-startup-id gnome-screenshot -ia
 bindsym Ctrl+Print exec --no-startup-id deepin-screenshot 
@@ -321,13 +345,16 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
+#whenever middle mouse button is pushed on titlebar or border, close the window
+bindsym --release --border button2 kill
+
 # cycle focus
 # use left or right oposite to the extra monitor
 #bindsym $mod+Tab focus left
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDon exec xbacklight -dec 20 # decrease screen brightness
+#bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+#bindsym XF86MonBrightnessDon exec xbacklight -dec 20 # decrease screen brightness
 
 # Media player controls
 #bindsym XF86AudioPlay exec playerctl play
@@ -338,12 +365,10 @@ bindsym XF86MonBrightnessDon exec xbacklight -dec 20 # decrease screen brightnes
 # Multimedia keys
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-bindsym $mod+Shift+P exec --no-startup-id screen-setup
+#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 #set	$background	#272827
 #set	$foreground	#657b83
@@ -377,3 +402,35 @@ client.urgent           $gunmetal	$darkred		$white		$darkred		$darkred
 client.placeholder      $black		$richblack		$white 		$black			$richblack
 
 client.background       $white
+
+############################################################
+################################################## i3-volume configuration
+############################################################
+## Volume control
+
+# Path to volume control, without trailing slash
+set $volumepath ~/.i3-volume
+
+# Command for the status line
+#   ie: i3blocks, i3status
+set $statuscmd i3status
+
+# Signal used to update the status line
+#   i3blocks uses SIGRTMIN+10 by default
+#   i3status uses SIGUSR1 by default
+set $statussig SIGUSR1
+
+# Amount to increase/decrease volume as a percentage
+set $volumestep 5
+
+# pulseaudio-utils settings
+#
+# Symbolic name for sink (numeric index not supported)
+#   Recommended: comment out this setting and omit the -s option to use default sink
+#   List sink names: pacmd list-sinks | awk -F "[<>]" '/^\s+name: <.*>/{print $2}'
+#set $sinkname alsa_output.pci-0000_00_1b.0.analog-stereo
+
+# Using pulseaudio-utils (append "-s $sinkname" without quotes to override default sink)
+bindsym XF86AudioRaiseVolume exec --no-startup-id $volumepath/volume -n -y -t $statuscmd -u $statussig up $volumestep
+bindsym XF86AudioLowerVolume exec --no-startup-id $volumepath/volume -n -y -t $statuscmd -u $statussig down $volumestep
+bindsym XF86AudioMute        exec --no-startup-id $volumepath/volume -n -y -t $statuscmd -u $statussig mute

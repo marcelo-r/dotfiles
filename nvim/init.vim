@@ -8,7 +8,7 @@ Plug 'SirVer/ultisnips'								" snippets
 " file explorer 
 Plug 'scrooloose/nerdtree'							" sidebar explorer
 Plug 'ryanoasis/vim-devicons'						" icons for nerdtree
-"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'							" ripgrep plugin
 " git support
@@ -27,9 +27,12 @@ Plug 'jiangmiao/auto-pairs'							" auto close () [] {} '' etc
 "Plug 'luochen1990/rainbow'							" rainbow parenteses
 Plug 'tpope/vim-surround'							" surround phrases with stuff
 Plug 'Yggdroot/indentLine'							" show indetation level
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
-" Github Copilot
 Plug 'github/copilot.vim'
+"call Copilot('disable')
+"imap <silent><script><expr> <C-Space> copilot#Accept("\<CR>")
+"let g:copilot_no_tab_map = v:true
 
 """ languages support
 " python
@@ -38,11 +41,6 @@ Plug 'psf/black', { 'branch': 'stable', 'for': 'python' }
 " golang
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'sebdah/vim-delve'
-" clojure
-Plug 'Olical/conjure'
-Plug 'tpope/vim-dispatch'
-Plug 'clojure-vim/vim-jack-in'
-let g:rainbow_active = 1
 " rust
 Plug 'rust-lang/rust.vim'
 " yaml 
@@ -51,22 +49,32 @@ Plug 'stephpy/vim-yaml'
 Plug 'ekalinin/dockerfile.vim'
 Plug 'Konfekt/FastFold'
 Plug 'andrewstuart/vim-kubernetes'
-" javascript
-Plug 'pangloss/vim-javascript'
+" typescript
+"Plug 'neovim/nvim-lspconfig'
+"Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'MunifTanjim/prettier.nvim'
+" formatting in normal mode
+nmap <localleader>f <Plug>(prettier-format)
 
 """ optionals
 " themes 
 Plug 'sainnhe/sonokai'
 let g:sonokai_diagnostic_text_highlight = 1
+let g:sonokai_disable_italic_comment=1
+let g:sonokai_style = 'atlantis'
 Plug 'joshdick/onedark.vim'
+Plug 'projekt0n/github-nvim-theme'
+let g:github_comment_style = 'none'
+
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " only in neovim:
 if has('nvim-0.5')
-	Plug 'radenling/vim-dispatch-neovim'
+    Plug 'radenling/vim-dispatch-neovim'
 	" minimap
-    Plug 'wfxr/minimap.vim'
-    let g:minimap_width = 10
-    let g:minimap_git_colors = 1
+    "Plug 'wfxr/minimap.vim'
+    "let g:minimap_width = 10
+    "let g:minimap_git_colors = 1
 endif
 Plug 'szw/vim-smartclose'
 
@@ -98,15 +106,15 @@ set tw=79   " width of document (used by gd)
 set nowrap  " don't automatically wrap on load
 set fo-=t   " don't automatically wrap text when typing
 set colorcolumn=80,120
-highlight ColorColumn ctermbg=233
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+"if has("patch-8.1.1564")
+"  " Recently vim can merge signcolumn and number column into one
+"  set signcolumn=number
+"else
+"  set signcolumn=yes
+"endif
+set signcolumn=yes
 
 " Some servers have issues with backup files, see #649.
 set nobackup
@@ -127,7 +135,7 @@ set splitright
 " softtabstop:      Fine tunes the amount of white space to be added
 " shiftwidth        Determines the amount of whitespace to add in normal mode
 " expandtab:        When this option is enabled, vi will use spaces instead of tabs
-set tabstop=8 
+set tabstop=4 
 set softtabstop=4 
 set shiftwidth=4 
 set noexpandtab 
@@ -147,8 +155,8 @@ syntax enable
 if has('termguicolors')
   set termguicolors
 endif
-let g:sonokai_style = 'atlantis'
 colorscheme sonokai
+"highlight ColorColumn ctermbg=233 ctermfg=233 guibg=#262626 guifg=#262626
 
 "Open file at same line last closed
 if has("autocmd")
@@ -177,6 +185,10 @@ let maplocalleader="\\"
 " ; will work like :
 "nnoremap ; :
 "vnoremap ; :
+"nnoremap <C-S> :w<CR>
+noremap <silent><C-S> :update<CR>
+vnoremap <silent><C-S> <C-C>:update<CR>
+inoremap <silent><C-S> <C-O>:update<CR>
 
 " easier navigation
 nnoremap <C-J> <C-W><C-J>
@@ -208,12 +220,12 @@ nnoremap <leader>b <esc>:buffers<CR>
 """ plugins configuration
 
 " open NERDTree on starup when no file specified
-"function! StartUp()
-"    if 0 == argc()
-"        NERDTree
-"    end
-"endfunction
-"autocmd VimEnter * call StartUp()
+function! StartUp()
+    if 0 == argc()
+        NERDTree
+    end
+endfunction
+autocmd VimEnter * call StartUp()
 
 let g:NERDTreeWinPos = "right"
 let NERDTreeShowHidden=1
@@ -222,17 +234,28 @@ let NERDTreeIgnore=["\.git$", "\.vscode", "bin$"]
 " avoid conflict between ALE and coc-vim
 let g:ale_disable_lsp = 1
 let g:ale_sign_column_always = 1
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
 
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
-"let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded', 'highlight': 'Identifier',  }}
-let g:fzf_layout = { 'down': '~40%' }
+"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'border': 'rounded', 'highlight': 'Identifier',  }}
+"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true, 'yoffset': 1.0 } }
+"let g:fzf_layout = { 'down': '~40%' }
+" See `man fzf-tmux` for available options
+if exists('$TMUX')
+	let g:fzf_layout = { 'tmux': '-p70%,60%' }
+else
+	let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'border': 'rounded', 'highlight': 'Identifier',  }}
+endif
 
 let g:gitgutter_enabled = 1
 let g:gitgutter_signs = 1
 
 let g:lightline = {
-	\ 'colorscheme': 'sonokai',
+	\ 'colorscheme': 'github_dark_default',
 	\ }
 
 let g:airline#extensions#tabline#enabled = 1
@@ -242,12 +265,11 @@ let g:airline#extensions#tabline#show_tab_count = 0
 let g:airline#extensions#tabline#buffers_label = 'b'
 let g:airline#extensions#tabline#tabs_label = 't'
 
-let g:indentLine_enabled = 1
+let g:indentLine_enabled = 0
 "let g:indentLine_char_list = ['⎸']
-"let g:indentLine_char_list = ['|']
-let g:indentLine_char_list = ['¦']
-"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setColors = 0
+set list lcs=tab:\|\ 
 
 " Utilsnips
 let g:UltiSnipsExpandTrigger="<C-l>"
@@ -275,8 +297,11 @@ else
 endif
 
 " completion confirm on enter
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+"inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+"			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
 			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 
 " Use tab to trigger completion and navigate to next item
 function! s:check_back_space() abort
@@ -324,6 +349,7 @@ nmap <leader>fe <esc>:FzfGFiles<CR>
 nmap <leader>fc <esc>:FzfCommands<CR>
 nmap <leader>fs <esc>:FzfLines<CR>
 nmap <leader>fb <esc>:FzfBuffers<CR>
+nmap <leader>bb <esc>:FzfBuffers<CR>
 nmap <leader>fr <esc>:FzfRg<CR>
 
 nnoremap <leader>pn :NERDTreeToggle<CR>
@@ -360,16 +386,37 @@ inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
 inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 
 " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
+"nnoremap <silent> K :call <SID>show_documentation()<CR>
+"function! s:show_documentation()
+"  if (index(['vim','help'], &filetype) >= 0)
+"    execute 'h '.expand('<cword>')
+"  elseif (coc#rpc#ready())
+"    call CocActionAsync('doHover')
+"  else
+"    execute '!' . &keywordprg . " " . expand('<cword>')
+"  endif
+"endfunction
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
   else
-    execute '!' . &keywordprg . " " . expand('<cword>')
+    call feedkeys('K', 'in')
   endif
 endfunction
+
+" Remap <C-f> and <C-b> to scroll float windows/popups
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
 
 " terminal
 if has('nvim')
@@ -427,7 +474,10 @@ au VimLeave * set guicursor=a:hor100
 " spellcheck
 " use F11 to toggle spellcheck
 " use <C-x>s in insert mode to show suggestions
-"set spelllang=en
-"set spellsuggest=best,9
-"nnoremap <silent> <F11> :set spell!<cr>
-"inoremap <silent> <F11> <C-O>:set spell!<cr>
+set spelllang=en
+set spellsuggest=best,9
+nnoremap <silent> <F11> :set spell!<cr>
+inoremap <silent> <F11> <C-O>:set spell!<cr>
+
+"let &t_SI = "\e[4 q"
+"let &t_EI = "\e[4 q"
