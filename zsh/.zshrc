@@ -119,3 +119,5 @@ PROMPT="%{$fg[cyan]%}%1~ %(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
 PROMPT+='%{$reset_color%}'
 
 eval "$(minikube completion zsh)"
+
+export MY_INIT_VIM="$HOME/.config/nvim/init.vim"

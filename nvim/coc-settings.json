@@ -40,9 +40,13 @@
 	"python.linting.pylintEnabled": true,
 	"python.formatting.provider": "black",
 	"coc.preferences.formatOnType": true,
-	"rust-analyzer.serverPath": "/usr/local/bin/rust-analyzer",
 	"rust-analyzer.hover.documentation.enable": true,
 	"rust-analyzer.signatureInfo.documentation.enable": true,
 	"rust-analyzer.trace.server": "verbose",
 	"rust-analyzer.enable": true
+	"workspace.ignoredFolders": [
+		"$HOME",
+		"$HOME/.cargo/**",
+		"$HOME/.rustup/**"
+	],
 }
