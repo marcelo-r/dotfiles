@@ -1,9 +1,22 @@
+-- my config
 require'keymaps'
+require('user.functions')
 
+-- my plugin configuration
+require('neodev').setup() -- should be first
 require'plugins.telescope'
 require'plugins.cmp'
+--require'plugins.treesitter'
+require'plugins.mason'
 
-require('user.functions')
+require("fidget").setup({})
+
+require("ibl").setup({
+       debounce = 100,
+       indent = { char = "▏" },
+       whitespace = { highlight = { "Whitespace", "NonText" } },
+       scope = { exclude = { language = { "lua" } } },
+})
 
 -- lsp configuration
 local lspconfig = require('lspconfig')
@@ -18,7 +31,8 @@ lspconfig.rust_analyzer.setup {
 }
 lspconfig.gopls.setup {}
 
--- recommended configs
+-- recommended configs for LSP
+--
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {

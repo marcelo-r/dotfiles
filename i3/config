@@ -286,6 +286,7 @@ exec --no-startup-id blueman-applet
 # compton handles 
 exec --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
 #exec --no-startup-id compton -cCzG -t-3 -l-5 -r4 --config /dev/null --backend xrender --unredir-if-possible
+exec --no-startup-id xrandr --setprovideroutputsource modesetting NVIDIA-0
 
 # lock screen
 bindsym $mod+Shift+Escape exec i3lock -e -c 111111
