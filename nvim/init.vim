@@ -19,9 +19,10 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'jremmen/vim-ripgrep'
     Plug 'easymotion/vim-easymotion'
     Plug 'nvim-telescope/telescope.nvim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate', 'branch': '0.5-compat'}
-    Plug 'nvim-treesitter/nvim-treesitter-textobjects', {'branch': '0.5-compat'}
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
     " notification UI
     Plug 'j-hui/fidget.nvim'
@@ -48,7 +49,8 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'williamboman/mason-lspconfig.nvim'
 
     """ languages support
-    Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+    Plug 'ray-x/go.nvim'
+    "Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     Plug 'rust-lang/rust.vim'
 
     """ optionals

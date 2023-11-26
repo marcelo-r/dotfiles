@@ -4,6 +4,7 @@ vim.keymap.set('n', '<leader>fg', telescope.git_files, { desc="[F]ind [G]it File
 vim.keymap.set('n', '<leader>f/', telescope.live_grep, { desc="[F]ind " })
 vim.keymap.set('n', '<leader>fb', telescope.buffers, { desc="[F]ind [B]uffers" })
 vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc="[F]ind [H]elp" })
+vim.keymap.set('n', '<leader>fc', telescope.commands, { desc="[F]ind [C]ommands" })
 vim.keymap.set('n', '<leader>fd' , telescope.diagnostics, { desc="[F]ind [D]iagnostics" })
 vim.keymap.set('n', '<leader>fr' , telescope.lsp_references, { desc="[F]ind [R]eferences" })
 vim.keymap.set('n', '<leader>fi' , telescope.lsp_implementations, { desc="[F]ind [I]mplementations" })

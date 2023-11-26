@@ -2,12 +2,15 @@
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
 
-    highlight = { enable = true },
+    highlight = {
+      enable = true,
+      disable = { "rust" },
+    },
     indent = { enable = true },
     incremental_selection = {
       enable = true,
@@ -32,35 +35,74 @@ vim.defer_fn(function()
         --  ['ic'] = '@class.inner',
         --},
       },
-      move = {
-        enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
-        goto_next_start = {
-          [']m'] = '@function.outer',
-          [']]'] = '@class.outer',
-        },
-        goto_next_end = {
-          [']M'] = '@function.outer',
-          [']['] = '@class.outer',
-        },
-        goto_previous_start = {
-          ['[m'] = '@function.outer',
-          ['[['] = '@class.outer',
-        },
-        goto_previous_end = {
-          ['[M'] = '@function.outer',
-          ['[]'] = '@class.outer',
-        },
-      },
-      swap = {
-        enable = true,
-        swap_next = {
-          ['<leader>a'] = '@parameter.inner',
-        },
-        swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
-        },
-      },
+      -- FIXME: This is broken, but I don't use it anyway
+      --move = {
+      --  enable = true,
+      --  set_jumps = true, -- whether to set jumps in the jumplist
+      --  goto_next_start = {
+      --    [']]'] = '@class.outer',
+      --  },
+      --  goto_next_end = {
+      --    [']['] = '@class.outer',
+      --  },
+      --  goto_previous_start = {
+      --    ['[['] = '@class.outer',
+      --  },
+      --  goto_previous_end = {
+      --    ['[]'] = '@class.outer',
+      --  },
+      --},
+      --swap = {
+      --  enable = true,
+      --  swap_next = {
+      --    ['<leader>a'] = '@parameter.inner',
+      --  },
+      --  swap_previous = {
+      --    ['<leader>A'] = '@parameter.inner',
+      --  },
+      --},
     },
   }
 end, 0)
+
+
+---- Treesitter highlight groups
+--
+----Misc
+--hlmap.error = nil
+--hlmap["punctuation.delimiter"] = "Delimiter"
+--hlmap["punctuation.bracket"] = "Delimiter"
+--
+---- Constants
+--hlmap["constant"] = "Constant"
+--hlmap["constant.builtin"] = "Type"
+--hlmap["constant.macro"] = "Define"
+--hlmap["string"] = "String"
+--hlmap["string.regex"] = "String"
+--hlmap["string.escape"] = "SpecialChar"
+--hlmap["character"] = "Character"
+--hlmap["number"] = "Number"
+--hlmap["boolean"] = "Boolean"
+--hlmap["float"] = "Float"
+--
+---- Functions
+--hlmap["function"] = "Function"
+--hlmap["function.builtin"] = "Special"
+--hlmap["function.macro"] = "Macro"
+--hlmap["parameter"] = "Identifier"
+--hlmap["method"] = "Function"
+--hlmap["field"] = "Identifier"
+--hlmap["property"] = "Identifier"
+--hlmap["constructor"] = "Type"
+--
+---- Keywords
+--hlmap["conditional"] = "Conditional"
+--hlmap["repeat"] = "Repeat"
+--hlmap["label"] = "Label"
+--hlmap["operator"] = "Operator"
+--hlmap["keyword"] = "Repeat"
+--hlmap["exception"] = "Exception"
+--hlmap["include"] = "Include"
+--hlmap["type"] = "Type"
+--hlmap["type.builtin"] = "Type"
+--hlmap["structure"] = "Structure"

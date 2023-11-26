@@ -6,8 +6,9 @@ require('user.functions')
 require('neodev').setup() -- should be first
 require'plugins.telescope'
 require'plugins.cmp'
---require'plugins.treesitter'
+require'plugins.treesitter'
 require'plugins.mason'
+require'plugins.go'
 
 require("fidget").setup({})
 

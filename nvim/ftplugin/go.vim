@@ -14,11 +14,11 @@ let g:go_list_height = 5
 let g:go_def_reuse_buffer = 1
 
 " syntax highlight
-let g:go_highlight_structs = 1 
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_types = 1
+"let g:go_highlight_structs = 1 
+"let g:go_highlight_methods = 1
+"let g:go_highlight_functions = 1
+"let g:go_highlight_operators = 1
+"let g:go_highlight_types = 1
 
 let g:go_metalinter_autosave = 0
 let g:go_metalinter_autosave_enabled = ['vet', 'revive', 'errcheck', 'deadcode', 'gosimple', 'unused', 'ineffassign', 'lll', 'staticcheck', 'prealloc', 'gomnd', 'goconst', 'gosec', 'funlen']
