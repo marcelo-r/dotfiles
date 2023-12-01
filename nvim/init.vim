@@ -15,11 +15,21 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'hrsh7th/nvim-cmp'
     Plug 'SirVer/ultisnips'
 
+    " dependency installer
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
+
     " navigation
-    Plug 'jremmen/vim-ripgrep'
+    Plug 'nvim-tree/nvim-tree.lua'
+    Plug 'ThePrimeagen/harpoon'
+
+    " debugger support
+    Plug 'mfussenegger/nvim-dap'
+
     Plug 'easymotion/vim-easymotion'
     Plug 'nvim-telescope/telescope.nvim'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'jremmen/vim-ripgrep'
 
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -35,18 +45,14 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'vim-airline/vim-airline' 
 
     """ utils
-    Plug 'ryanoasis/vim-devicons'
+    Plug 'nvim-tree/nvim-web-devicons'
     Plug 'machakann/vim-highlightedyank'
-    Plug 'jiangmiao/auto-pairs'	
+    Plug 'windwp/nvim-autopairs'
     Plug 'tpope/vim-surround'
     Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'v3.3.7'}
     Plug 'tpope/vim-sleuth', {'branch': 'v2.0'}
 
     Plug 'github/copilot.vim'
-
-    " LSP servers installer
-    Plug 'williamboman/mason.nvim'
-    Plug 'williamboman/mason-lspconfig.nvim'
 
     """ languages support
     Plug 'ray-x/go.nvim'
@@ -115,8 +121,8 @@ set splitright
 "" shiftwidth        Determines the amount of whitespace to add in normal mode
 "" expandtab:        When this option is enabled, vi will use spaces instead of tabs
 set tabstop=4 
+set shiftwidth=4 
 "set softtabstop=4 
-"set shiftwidth=4 
 "set noexpandtab 
 ""set expandtab
 "set smarttab
@@ -268,5 +274,5 @@ nnoremap <silent> <F11> :set spell!<cr>
 inoremap <silent> <F11> <C-O>:set spell!<cr>
 
 lua << EOF
-	require'init'
+    require'init'
 EOF
