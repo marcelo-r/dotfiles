@@ -1,46 +1,82 @@
 -- my config
-require'keymaps'
-require('user.functions')
+require 'settings'
+require 'keymaps'
+require 'commands'
 
-require'settings'
+require('neodev').setup() -- should be first
 
-require('neodev').setup() -- should be first 
-
-require'plugins.tree'
-require'plugins.telescope'
-require'plugins.cmp'
-require'plugins.treesitter'
-require'plugins.mason'
-require'plugins.go'
-require'plugins.harpoon'
+require 'plugins.tree'
+require 'plugins.telescope'
+require 'plugins.cmp'
+require 'plugins.treesitter'
+require 'plugins.mason'
+require 'plugins.go'
+require 'plugins.harpoon'
 
 require("fidget").setup({})
 
 require("nvim-autopairs").setup {}
 
 require("ibl").setup({
-       debounce = 100,
-       indent = { char = "▏" },
-       whitespace = { highlight = { "Whitespace", "NonText" } },
-       scope = { exclude = { language = { "lua" } } },
+  debounce = 100,
+  indent = { char = "▏" },
+  whitespace = { highlight = { "Whitespace", "NonText" } },
+  scope = { exclude = { language = { "lua" } } },
+})
+
+vim.diagnostic.config({
+  virtual_text = {
+    source = "always", -- Or "if_many"
+  },
+  float = {
+    source = "always", -- Or "if_many"
+  },
+  update_in_insert = false,
 })
 
 -- You will likely want to reduce updatetime which affects CursorHold
 -- note: this setting is global and should be set only once
---vim.o.updatetime = 250
---vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+vim.o.updatetime = 250
 
-vim.diagnostic.config({
-  virtual_text = {
-    source = "always",  -- Or "if_many"
-  },
-  float = {
-    source = "always",  -- Or "if_many"
-  },
-})
+--vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+--  group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
+--  callback = function ()
+--    vim.diagnostic.open_float(nil, {focus=false})
+--  end
+--})
+
+local float_diagnostic = function()
+  local opts = {
+    focusable = false,
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+    border = 'rounded',
+    source = 'always',
+    prefix = ' ',
+    scope = 'line',
+    update_in_insert = false,
+  }
+  vim.diagnostic.open_float(nil, opts)
+end
+vim.keymap.set('n', '<leader>d', float_diagnostic, { noremap = true, silent = true })
+
+--vim.api.nvim_create_autocmd("CursorHold", {
+--  buffer = bufnr,
+--  callback = function()
+--    local opts = {
+--      focusable = false,
+--      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+--      border = 'rounded',
+--      source = 'always',
+--      prefix = ' ',
+--      scope = 'line',
+--      update_in_insert = false,
+--    }
+--    vim.diagnostic.open_float(nil, opts)
+--  end
+--})
 
 -- print diagnostics to message area
-function PrintDiagnostics(opts, bufnr, line_nr, client_id)
+function PrintDiagnostics(opts, bufnr, line_nr, _)
   bufnr = bufnr or 0
   line_nr = line_nr or (vim.api.nvim_win_get_cursor(0)[1] - 1)
   opts = opts or {['lnum'] = line_nr}
@@ -58,5 +94,9 @@ function PrintDiagnostics(opts, bufnr, line_nr, client_id)
   end
   vim.api.nvim_echo({{diagnostic_message, "Normal"}}, false, {})
 end
-
-vim.cmd [[ autocmd! CursorHold * lua PrintDiagnostics() ]]
+--vim.api.nvim_create_autocmd("CursorHold", {
+--  buffer = bufnr,
+--  callback = function()
+--    PrintDiagnostics()
+--  end
+--})
