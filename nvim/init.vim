@@ -1,7 +1,11 @@
 " remove spacebar mapping and make it leader
-nnoremap <SPACE> <Nop>
-let mapleader=" "
-let maplocalleader="\\"
+lua << EOF
+    local opts = { noremap=true, silent=true }
+    vim.api.nvim_set_keymap('', '<Space>', '<Nop>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('', '\\', '<Nop>', {noremap = true, silent = true})
+    vim.g.mapleader = " "
+    vim.g.maplocalleader = "\\"
+EOF
 
 call plug#begin('~/.local/share/nvim/plugged')
     Plug 'nvim-lua/plenary.nvim' " required by some lua plugins
@@ -52,7 +56,7 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'v3.3.7'}
     Plug 'tpope/vim-sleuth', {'branch': 'v2.0'}
 
-    Plug 'github/copilot.vim'
+    "Plug 'github/copilot.vim'
 
     """ languages support
     Plug 'ray-x/go.nvim'
