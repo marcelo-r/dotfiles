@@ -41,20 +41,20 @@ let g:go_metalinter_enabled = [ 'deadcode', 'depguard', 'dogsled', 'dupl',
     		\ 'asciicheck', 'gocognit', 'godox', 'goerr113', 'nestif',
     		\ 'prealloc', 'whitespace']
 
-nmap <localleader>r <Plug>(go-run)
-nmap <localleader>b <Plug>(go-build)
-nmap <localleader>tt <Plug>(go-test)
-nmap <localleader>tf <Plug>(go-test-func)
-nnoremap <localleader>pl <esc>:GoMetaLinterAutoSaveToggle<CR>
-nnoremap <localleader>ll <esc>:GoMetaLinter<CR>
+"nmap <localleader>r <Plug>(go-run)
+"nmap <localleader>b <Plug>(go-build)
+"nmap <localleader>tt <Plug>(go-test)
+"nmap <localleader>tf <Plug>(go-test-func)
+"nnoremap <localleader>pl <esc>:GoMetaLinterAutoSaveToggle<CR>
+"nnoremap <localleader>ll <esc>:GoMetaLinter<CR>
 
-nmap <localleader>* <esc>:GoSameIdsToggle<CR>
-
-nnoremap <F9> <esc>:GoDebugBreakpoint<CR>
-nnoremap <F5> <esc>:GoDebugContinue<CR>
-nnoremap <C><S><F5> <esc>:GoDebugRestart<CR>
-nnoremap <F8> <esc>:GoDebugHalt<CR>
-nnoremap <F10> <esc>:GoDebugNext<CR>
-" step in
-nnoremap <F11> <esc>:GoDebugStep<CR>
+"nmap <localleader>* <esc>:GoSameIdsToggle<CR>
+"
+"nnoremap <F9> <esc>:GoDebugBreakpoint<CR>
+"nnoremap <F5> <esc>:GoDebugContinue<CR>
+"nnoremap <C><S><F5> <esc>:GoDebugRestart<CR>
+"nnoremap <F8> <esc>:GoDebugHalt<CR>
+"nnoremap <F10> <esc>:GoDebugNext<CR>
+"" step in
+"nnoremap <F11> <esc>:GoDebugStep<CR>
 
