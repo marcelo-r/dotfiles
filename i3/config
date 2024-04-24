@@ -278,8 +278,9 @@ exec --no-startup-id nm-applet
 exec --no-startup-id feh --bg-fill $HOME/Pictures/Wallpapers/bg.jpg
 # bluetooth
 exec --no-startup-id blueman-applet
-# vpn
-#exec --no-startup-id "/opt/Mullvad\ VPN/mullvad-vpn %U" 
+# turnoff screensaver
+exec_always --no-startup-id xset s 3600
+exec_always --no-startup-id xset dpms 0 0 3600
 
 ## nvidia force enable composition
 # nvidia driver handles vsync
