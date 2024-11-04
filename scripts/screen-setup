@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DISPLAYS=$(xrandr | grep -E " (connected)" | cut -d' ' -f1)
+
+#HDMI=$(xrandr | grep -E 'HDMI-([0-9-])+( )+(connected)' | awk '{printf $1}')
+#EDP=$(xrandr | grep -E 'eDP-([0-9-])+( )+(connected)' | awk '{printf $1}')
+
+HDMI=$(sh -c "echo '$DISPLAYS' | tail -1")
+EDP=$(sh -c "echo '$DISPLAYS' | head -1")
+
+echo "EDP: $EDP"
+echo "HDMI: $HDMI"
+
+#xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --output $HDMI --auto
+xrandr --output $EDP --auto
+xrandr --output "$HDMI" --primary --auto --right-of "$EDP" --auto
+#xrandr --output "$HDMI" --primary --auto --right-of "$EDP" --auto --set "PRIME Synchronization" 1
+feh --bg-fill ~/Pictures/Wallpapers/bg

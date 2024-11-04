@@ -12,6 +12,7 @@ require 'plugins.treesitter'
 require 'plugins.mason'
 require 'plugins.go'
 require 'plugins.harpoon'
+require 'plugins.dap'
 
 require("fidget").setup({})
 
@@ -33,6 +34,13 @@ vim.diagnostic.config({
   },
   update_in_insert = false,
 })
+
+-- Set completeopt to have a better completion experience
+-- :help completeopt
+-- menuone: popup even when there's only one match
+-- noinsert: Do not insert text until a selection is made
+-- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
+vim.o.completeopt = "menuone,noinsert,noselect"
 
 -- You will likely want to reduce updatetime which affects CursorHold
 -- note: this setting is global and should be set only once
