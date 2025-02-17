@@ -1,64 +1,84 @@
-"Automatically reloads neovim configuration file on write (w)
-autocmd! bufwritepost init.vim source %
+" remove spacebar mapping and make it leader
+lua << EOF
+    local opts = { noremap=true, silent=true }
+    vim.api.nvim_set_keymap('', '<Space>', '<Nop>', {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('', '\\', '<Nop>', {noremap = true, silent = true})
+    vim.g.mapleader = " "
+    vim.g.maplocalleader = "\\"
+EOF
 
 call plug#begin('~/.local/share/nvim/plugged')
-""" base for IDE-like XP
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'dense-analysis/ale'
-Plug 'SirVer/ultisnips'
-" file explorer 
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'jremmen/vim-ripgrep'
-" git support
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-" status line
-Plug 'vim-airline/vim-airline'
-"Plug 'itchyny/lightline.vim'
-""" utils
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'easymotion/vim-easymotion'
-Plug 'machakann/vim-highlightedyank'
-" auto close () [] {} '' etc
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
-Plug 'Yggdroot/indentLine'
-""" langs
-" python
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
-Plug 'psf/black', { 'branch': 'stable', 'for': 'python' }
-" golang
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'sebdah/vim-delve'
-" yaml 
-Plug 'stephpy/vim-yaml'
-"docker
-Plug 'ekalinin/dockerfile.vim'
-Plug 'Konfekt/FastFold'
+    Plug 'nvim-lua/plenary.nvim' " required by some lua plugins
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'folke/neodev.nvim'
 
-""" optionals
-" themes 
-Plug 'sainnhe/sonokai'
-let g:sonokai_diagnostic_text_highlight = 1
-Plug 'joshdick/onedark.vim'
-" minimap
-if has('nvim-0.5')
-    Plug 'wfxr/minimap.vim'
-    let g:minimap_width = 10
-    let g:minimap_git_colors = 1
-endif
-"Plug 'jeffkreeftmeijer/vim-numbertoggle'
-"set number relativenumber
-"Plug 'ervandew/supertab'
-"let g:SuperTabDefaultCompletionType = "<c-n>"
-Plug 'szw/vim-smartclose'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'SirVer/ultisnips'
+
+    " dependency installer
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
+
+    " navigation
+    Plug 'nvim-tree/nvim-tree.lua'
+    Plug 'ThePrimeagen/harpoon'
+
+    " debugger support
+    Plug 'mfussenegger/nvim-dap'
+
+    Plug 'easymotion/vim-easymotion'
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'jremmen/vim-ripgrep'
+
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
+    " notification UI
+    Plug 'j-hui/fidget.nvim'
+
+    " git support
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+
+    " statusline
+    Plug 'vim-airline/vim-airline' 
+
+    """ utils
+    Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'machakann/vim-highlightedyank'
+    Plug 'windwp/nvim-autopairs'
+    Plug 'tpope/vim-surround'
+    Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'v3.3.7'}
+    Plug 'tpope/vim-sleuth', {'branch': 'v2.0'}
+
+    "Plug 'github/copilot.vim'
+
+    """ languages support
+    Plug 'ray-x/go.nvim'
+    "Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+    Plug 'rust-lang/rust.vim'
+
+    """ optionals
+    " themes 
+    Plug 'sainnhe/sonokai'
+    let g:sonokai_diagnostic_text_highlight = 1
+    let g:sonokai_disable_italic_comment=1
+    let g:sonokai_style = 'atlantis'
+    Plug 'joshdick/onedark.vim'
+    Plug 'projekt0n/github-nvim-theme'
+    let g:github_comment_style = 'none'
+
+    Plug 'szw/vim-smartclose'
 
 call plug#end()
+
+"Automatically reloads neovim configuration file on write (w)
+autocmd! bufwritepost init.vim source %
 
 set encoding=utf-8
 " allow buffers to open in background
@@ -80,20 +100,10 @@ set sessionoptions+=globals
 " Showing line numbers and length
 set number  " show line numbers
 set tw=79   " width of document (used by gd)
-"set nowrap  " don't automatically wrap on load
-set wrap  " automatically wrap on load
+set nowrap  " don't automatically wrap on load
 set fo-=t   " don't automatically wrap text when typing
 set colorcolumn=80,120
-"set colorcolumn=100
-highlight ColorColumn ctermbg=233
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 
 " Some servers have issues with backup files, see #649.
 set nobackup
@@ -109,8 +119,21 @@ set shortmess+=c
 set splitbelow
 set splitright
 
-" configure tabs spaces indetation
-set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab smarttab
+"" configure tabs spaces indetation
+"" tabstop:          Width of tab character
+"" softtabstop:      Fine tunes the amount of white space to be added
+"" shiftwidth        Determines the amount of whitespace to add in normal mode
+"" expandtab:        When this option is enabled, vi will use spaces instead of tabs
+set tabstop=4 
+set shiftwidth=4 
+"set softtabstop=4 
+"set noexpandtab 
+""set expandtab
+"set smarttab
+"set autoindent
+" display tab and show them as the character |
+"set list
+"set lcs=tab:\|\ 
 
 " Enable filetype plugins
 filetype plugin on
@@ -121,8 +144,8 @@ syntax enable
 if has('termguicolors')
   set termguicolors
 endif
-let g:sonokai_style = 'atlantis'
 colorscheme sonokai
+"highlight ColorColumn ctermbg=233 ctermfg=233 guibg=#262626 guifg=#262626
 
 "Open file at same line last closed
 if has("autocmd")
@@ -142,15 +165,15 @@ catch
 endtry
 
 """ mappings
-" remove spacebar mapping and make it leader
-nnoremap <SPACE> <Nop>
-let mapleader=" "
-let maplocalleader="\\"
 
 " easier command input, especially for keymaps with bad : location
 " ; will work like :
 nnoremap ; :
 vnoremap ; :
+" save with crtl-s
+noremap <silent><C-S> :update<CR>
+vnoremap <silent><C-S> <C-C>:update<CR>
+inoremap <silent><C-S> <C-O>:update<CR>
 
 " easier navigation
 nnoremap <C-J> <C-W><C-J>
@@ -181,36 +204,23 @@ nnoremap <leader>b <esc>:buffers<CR>
 
 """ plugins configuration
 
-" open NERDTree on starup when no file specified
-function! StartUp()
-    if 0 == argc()
-        NERDTree
-    end
-endfunction
-autocmd VimEnter * call StartUp()
-
-let g:NERDTreeWinPos = "right"
-let NERDTreeShowHidden=1
-let NERDTreeIgnore=["\.git$", "\.vscode", "bin$"]
-
 " avoid conflict between ALE and coc-vim
 let g:ale_disable_lsp = 1
 let g:ale_sign_column_always = 1
-
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_buffers_jump = 1
-"let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded', 'highlight': 'Identifier',  }}
-let g:fzf_layout = { 'down': '~40%' }
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
 
 let g:gitgutter_enabled = 1
 let g:gitgutter_signs = 1
 
 let g:lightline = {
-	\ 'colorscheme': 'sonokai',
+	\ 'colorscheme': 'github_dark_default',
 	\ }
 
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_extensions = ['fzf', 'branch', 'coc', 'quickfix', 'searchcount']
+let g:airline_extensions = ['branch', 'quickfix', 'searchcount']
 let g:airline_section_z = '%c %l/%L'
 let g:airline#extensions#tabline#show_tab_count = 0
 let g:airline#extensions#tabline#buffers_label = 'b'
@@ -220,123 +230,14 @@ let g:indentLine_enabled = 0
 "let g:indentLine_char_list = ['⎸']
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setColors = 0
-set list lcs=tab:\|\ 
 
+" Utilsnips
 let g:UltiSnipsExpandTrigger="<C-l>"
 
 """ plugin mappings - <leader>p
-" coc.nvim
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-" Symbol renaming.
-nmap <leader>r <Plug>(coc-rename)
 
-" Navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <leader>[ <Plug>(coc-diagnostic-prev)
-nmap <leader>] <Plug>(coc-diagnostic-next)
-
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" completion confirm on enter
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-			\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" Use tab to trigger completion and navigate to next item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-"inoremap <silent><expr> <CR>
-"  \ pumvisible() ? coc#_select_confirm() :
-"  \ coc#expandableOrJumpable() ?
-"  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"  \ <SID>check_back_space() ? "\<CR>" :
-"  \ coc#refresh()
-"
-"function! s:check_back_space() abort
-"  let col = col('.') - 1
-"  return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
-"
-"let g:coc_snippet_next = '<CR>'
-
-" Remap <C-f> and <C-b> for scroll float windows/popups. (optional)
-"if has('nvim-0.4.0') || has('patch-8.2.0750')
-"  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-"  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-"  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-"  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-"  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-"  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-"endif
-
-" fzf
-nmap <leader>ff <esc>:FzfFiles<CR>
-nmap <leader>fe <esc>:FzfGFiles<CR>
-nmap <leader>fc <esc>:FzfCommands<CR>
-nmap <leader>fs <esc>:FzfLines<CR>
-nmap <leader>fb <esc>:FzfBuffers<CR>
-nmap <leader>fr <esc>:FzfRg<CR>
-
-nnoremap <leader>pm :MinimapToggle<CR>
 "nnoremap <leader>pf :Black<CR>
 nnoremap <leader>pa :ALEFix<CR>
-
-xmap <leader>pf  <Plug>(coc-format-selected)
-nmap <leader>pf  <Plug>(coc-format-selected)
-
-" custom commands
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 ORG :call CocAction('runCommand', 'editor.action.organizeImport')
-
-""" functions
-" Better navigating through omnicomplete option list
-" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
-set completeopt=longest,menuone
-function! OmniPopup(action)
-    if pumvisible()
-        if a:action == 'j'
-            return "\<C-N>"
-        elseif a:action == 'k'
-            return "\<C-P>"
-        endif
-    endif
-    return a:action
-endfunction
-inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
-inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
 
 " terminal
 if has('nvim')
@@ -365,31 +266,8 @@ if has('nvim')
     augroup END
 endif
 
-nnoremap <leader>pn :NERDTreeToggle<CR>
-" sync nerdtree
-" Check if NERDTree is open or active
-function! IsNERDTreeOpen()
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
-
-" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-" file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
-  endif
-endfunction
-nnoremap <silent> <leader>k :bnext<CR>:call SyncTree()<CR>
-nnoremap <silent> <leader>j :bprev<CR>:call SyncTree()<CR>
-nnoremap <silent> <F12> :NERDTreeToggle<cr><c-w>l:call SyncTree()<cr><c-w>h
-nnoremap <silent> <leader>pn :NERDTreeToggle<cr><c-w>l:call SyncTree()<cr><c-w>h
-
-" Highlight currently open buffer in NERDTree
-autocmd BufRead * call SyncTree()
-
 " enable when using _ as terminal cursor so vim can reset it on exit
-au VimLeave * set guicursor=a:hor100
+"au VimLeave * set guicursor=a:hor100
 
 " spellcheck
 " use F11 to toggle spellcheck
@@ -398,3 +276,7 @@ set spelllang=en
 set spellsuggest=best,9
 nnoremap <silent> <F11> :set spell!<cr>
 inoremap <silent> <F11> <C-O>:set spell!<cr>
+
+lua << EOF
+    require'init'
+EOF

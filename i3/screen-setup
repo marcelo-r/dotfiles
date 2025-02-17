@@ -1,0 +1,9 @@
+#!/bin/bash
+
+HDMI=$(xrandr | grep -E 'HDMI-([0-9-])+( )+(connected)' | awk '{printf $1}')
+EDP=$(xrandr | grep -E 'eDP-([0-9-])+( )+(connected)' | awk '{printf $1}')
+
+xrandr --output $HDMI --auto
+xrandr --output $EDP --auto
+xrandr --output $HDMI --primary --auto --right-of $EDP --auto
+feh --bg-fill ~/Pictures/wallpapers/_bg
