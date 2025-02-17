@@ -12,7 +12,7 @@ require 'plugins.treesitter'
 require 'plugins.mason'
 require 'plugins.go'
 require 'plugins.harpoon'
-require 'plugins.dap'
+require 'plugins.trouble'
 
 require("fidget").setup({})
 
@@ -23,6 +23,14 @@ require("ibl").setup({
   indent = { char = "▏" },
   whitespace = { highlight = { "Whitespace", "NonText" } },
   scope = { exclude = { language = { "lua" } } },
+})
+
+require'lspconfig'.terraformls.setup{}
+vim.api.nvim_create_autocmd({"BufWritePre"}, {
+  pattern = {"*.tf", "*.tfvars", "*.hcl"},
+  callback = function()
+    vim.lsp.buf.format()
+  end,
 })
 
 vim.diagnostic.config({
@@ -108,3 +116,36 @@ end
 --    PrintDiagnostics()
 --  end
 --})
+
+
+-- Term Toggle Function
+-- ref: https://www.reddit.com/r/vim/comments/8n5bzs/comment/ljkp8re/
+local term_buf = nil
+local term_win = nil
+
+function TermToggle(height)
+    if term_win and vim.api.nvim_win_is_valid(term_win) then
+        vim.cmd("hide")
+    else
+        vim.cmd("botright new")
+        local new_buf = vim.api.nvim_get_current_buf()
+        vim.cmd("resize " .. height)
+        if term_buf and vim.api.nvim_buf_is_valid(term_buf) then
+            vim.cmd("buffer " .. term_buf) -- go to terminal buffer
+            vim.cmd("bd " .. new_buf) -- cleanup new buffer
+        else
+            vim.cmd("terminal")
+            term_buf = vim.api.nvim_get_current_buf()
+            vim.wo.number = false
+            vim.wo.relativenumber = false
+            vim.wo.signcolumn = "no"
+        end
+    vim.cmd("startinsert!")
+    term_win = vim.api.nvim_get_current_win()
+    end
+end
+
+-- Term Toggle Keymaps
+vim.keymap.set("n", "<A-t>", ":lua TermToggle(20)<CR>", { noremap = true, silent = true })
+vim.keymap.set("i", "<A-t>", "<Esc>:lua TermToggle(20)<CR>", { noremap = true, silent = true })
+vim.keymap.set("t", "<A-t>", "<C-\\><C-n>:lua TermToggle(20)<CR>", { noremap = true, silent = true })
