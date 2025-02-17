@@ -2,12 +2,9 @@
 
 declare -A apps
 apps+=(
-	["i3"]="$HOME/.config/i3"
 	["zsh"]="$HOME/.zshrc"
 	["tmux"]="$HOME/.tmux.conf"
-	["alacritty"]="$HOME/.config/alacritty"
 	["nvim"]="$HOME/.config/nvim"
-	["rofi"]="$HOME/.config/rofi"
 )
 
 # save each config to its own directory
@@ -25,9 +22,7 @@ save()
 			mkdir -p "$key"
 			cp "$conf" "$key"
 		else
-			echo "$key=$conf IS INVALID"
-			echo "aborted"
-			exit 1
+			echo "$key=$conf DOES NOT EXIST"
 		fi
 	done
 	echo "done"
