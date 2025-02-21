@@ -19,6 +19,9 @@ call plug#begin('~/.local/share/nvim/plugged')
     Plug 'hrsh7th/nvim-cmp'
     Plug 'SirVer/ultisnips'
 
+    " diagnostics
+    Plug 'folke/trouble.nvim'
+
     " dependency installer
     Plug 'williamboman/mason.nvim'
     Plug 'williamboman/mason-lspconfig.nvim'

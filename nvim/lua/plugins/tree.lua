@@ -39,6 +39,9 @@ require("nvim-tree").setup({
   git = {
     enable = true,
   },
+  update_focused_file = {
+      enable = true,
+  },
 })
 
 vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>NvimTreeToggle<CR>', { noremap = true, silent = true })
