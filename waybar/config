@@ -34,16 +34,17 @@
     "sway/workspaces": {
         "disable-scroll": false,
         "enable-bar-scroll": true,
-        "all-outputs": true,
+        "all-outputs": false,
         "warp-on-scroll": false,
         "format": "{name}: {icon}",
         "format-icons": {
             "1": "",
-            "2": "",
+            "2": "",
             "3": "",
-            "4": "",
+            "4": "",
+            "5": "",
             "urgent": "",
-            "focused": "",
+            //"focused": "",
             "default": ""
         }
     },
@@ -129,7 +130,7 @@
     },
     "sway/language": {
         // "format": "{}",
-        "on-click": "swaymsg input type:keyboard xkb_switch_layout setxkbmap us intl",
+        "on-click": "swaymsg input type:keyboard xkb_switch_layout setxkbmap 'us intl'",
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -187,8 +188,8 @@
             "default": "🎜"
         },
         "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+        // "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+        "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
     "custom/power": {
         "format" : "⏻ ",

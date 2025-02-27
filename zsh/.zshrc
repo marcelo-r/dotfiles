@@ -5,8 +5,10 @@
 export ZSH="/home/$USER/.oh-my-zsh"
 
 # asdf config and completion
-. $HOME/.asdf/asdf.sh
-fpath=(${ASDF_DIR}/completions $fpath)
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
 
 ZSH_THEME="robbyrussell"
 
@@ -47,8 +49,8 @@ source /usr/share/fzf/shell/key-bindings.zsh
 
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 
-eval "$(direnv hook zsh)"
-source $HOME/.local/kind/completion
+#eval "$(direnv hook zsh)"
+#source $HOME/.local/kind/completion
 
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -115,9 +117,11 @@ alias kus="setxkbmap us intl"
 alias kbr="setxkbmap br"
 
 # format prompt
-PROMPT="%{$fg[cyan]%}%1~ %(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
+PROMPT="%{$fg[cyan]%}%2~ %(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
 PROMPT+='%{$reset_color%}'
 
-eval "$(minikube completion zsh)"
+#eval "$(minikube completion zsh)"
 
-export MY_INIT_VIM="$HOME/.config/nvim/init.vim"
+#export MY_INIT_VIM="$HOME/.config/nvim/init.vim"
+
+eval "$(gh completion -s zsh)"
