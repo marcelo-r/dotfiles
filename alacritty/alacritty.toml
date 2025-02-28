@@ -25,7 +25,7 @@ background = "0x101421"
 foreground = "0xfffbf6"
 
 [cursor]
-style = "underline"
+style = "Beam"
 unfocused_hollow = true
 
 [env]

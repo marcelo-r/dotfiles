@@ -1,37 +1,20 @@
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
-
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
-    {import = 'plugins'}
-  },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "sainnhe/sonokai" } },
-  -- automatically check for plugin updates
-  checker = { enabled = true },
-})
-
-vim.cmd("colorscheme sonokai")
-
 -- my config
+require 'settings'
 require 'keymaps'
 require 'commands'
+
+require('neodev').setup() -- should be first
+
+require 'plugins.tree'
+require 'plugins.telescope'
+require 'plugins.cmp'
+require 'plugins.treesitter'
+require 'plugins.mason'
+require 'plugins.go'
+require 'plugins.harpoon'
+require 'plugins.trouble'
+
+require("fidget").setup({})
 
 require("nvim-autopairs").setup {}
 
@@ -65,7 +48,7 @@ vim.diagnostic.config({
 -- menuone: popup even when there's only one match
 -- noinsert: Do not insert text until a selection is made
 -- noselect: Do not auto-select, nvim-cmp plugin will handle this for us.
--- vim.o.completeopt = "menuone,noinsert,noselect"
+vim.o.completeopt = "menuone,noinsert,noselect"
 
 -- You will likely want to reduce updatetime which affects CursorHold
 -- note: this setting is global and should be set only once

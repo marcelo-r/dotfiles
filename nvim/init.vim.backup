@@ -1,12 +1,84 @@
+" remove spacebar mapping and make it leader
 lua << EOF
     local opts = { noremap=true, silent=true }
-    vim.g.mapleader = " "
-    vim.g.maplocalleader = "\\"
     vim.api.nvim_set_keymap('', '<Space>', '<Nop>', {noremap = true, silent = true})
     vim.api.nvim_set_keymap('', '\\', '<Nop>', {noremap = true, silent = true})
+    vim.g.mapleader = " "
+    vim.g.maplocalleader = "\\"
 EOF
 
-let g:python3_host_prog = "/usr/bin/python3"
+call plug#begin('~/.local/share/nvim/plugged')
+    Plug 'nvim-lua/plenary.nvim' " required by some lua plugins
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'folke/neodev.nvim'
+
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'SirVer/ultisnips'
+
+    " diagnostics
+    Plug 'folke/trouble.nvim'
+
+    " dependency installer
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
+
+    " navigation
+    Plug 'nvim-tree/nvim-tree.lua'
+    Plug 'ThePrimeagen/harpoon'
+
+    " debugger support
+    Plug 'mfussenegger/nvim-dap'
+
+    Plug 'easymotion/vim-easymotion'
+    Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'jremmen/vim-ripgrep'
+
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
+    " notification UI
+    Plug 'j-hui/fidget.nvim'
+
+    " git support
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+
+    " statusline
+    Plug 'vim-airline/vim-airline' 
+
+    """ utils
+    Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'machakann/vim-highlightedyank'
+    Plug 'windwp/nvim-autopairs'
+    Plug 'tpope/vim-surround'
+    Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'v3.3.7'}
+    Plug 'tpope/vim-sleuth', {'branch': 'v2.0'}
+
+    "Plug 'github/copilot.vim'
+
+    """ languages support
+    Plug 'ray-x/go.nvim'
+    "Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+    Plug 'rust-lang/rust.vim'
+
+    """ optionals
+    " themes 
+    Plug 'sainnhe/sonokai'
+    let g:sonokai_diagnostic_text_highlight = 1
+    let g:sonokai_disable_italic_comment=1
+    let g:sonokai_style = 'atlantis'
+    Plug 'joshdick/onedark.vim'
+    Plug 'projekt0n/github-nvim-theme'
+    let g:github_comment_style = 'none'
+
+    Plug 'szw/vim-smartclose'
+
+call plug#end()
 
 "Automatically reloads neovim configuration file on write (w)
 autocmd! bufwritepost init.vim source %
@@ -75,7 +147,7 @@ syntax enable
 if has('termguicolors')
   set termguicolors
 endif
-"colorscheme sonokai
+colorscheme sonokai
 "highlight ColorColumn ctermbg=233 ctermfg=233 guibg=#262626 guifg=#262626
 
 "Open file at same line last closed
@@ -135,6 +207,14 @@ nnoremap <leader>b <esc>:buffers<CR>
 
 """ plugins configuration
 
+" avoid conflict between ALE and coc-vim
+let g:ale_disable_lsp = 1
+let g:ale_sign_column_always = 1
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
+
 let g:gitgutter_enabled = 1
 let g:gitgutter_signs = 1
 
@@ -153,6 +233,14 @@ let g:indentLine_enabled = 0
 "let g:indentLine_char_list = ['⎸']
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setColors = 0
+
+" Utilsnips
+let g:UltiSnipsExpandTrigger="<C-l>"
+
+""" plugin mappings - <leader>p
+
+"nnoremap <leader>pf :Black<CR>
+nnoremap <leader>pa :ALEFix<CR>
 
 " terminal
 if has('nvim')
@@ -181,6 +269,9 @@ if has('nvim')
     augroup END
 endif
 
+" enable when using _ as terminal cursor so vim can reset it on exit
+"au VimLeave * set guicursor=a:hor100
+
 " spellcheck
 " use F11 to toggle spellcheck
 " use <C-x>s in insert mode to show suggestions
@@ -189,9 +280,8 @@ set spellsuggest=best,9
 nnoremap <silent> <F11> :set spell!<cr>
 inoremap <silent> <F11> <C-O>:set spell!<cr>
 
-au VimLeave * set guicursor=a:ver100
-
 lua << EOF
     require('init')
 EOF
 
+au VimLeave * set guicursor=a:ver100
