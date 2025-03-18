@@ -2,7 +2,7 @@
 
 stow zsh
 stow tmux
-stow -t ~/.config .config/
+stow --dotfiles -t ~/.config .config/
 
 if command -v apt &> /dev/null; then
     echo "apt is available"

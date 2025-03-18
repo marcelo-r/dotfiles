@@ -1,0 +1,369 @@
+#########
+# basics
+#########
+# Mod1 = Alt
+# Mod4 = Super (Windows Key)
+set $mod Mod4
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# set monitors
+set $main DP-1
+set $left HDMI-A-1
+
+output $main pos 1920 0 res 2560x1440@165Hz
+output $left pos 0 0 res 1920x1080@60Hz
+
+# freesync
+output $main adaptive_sync on
+
+set $term alacritty
+
+input * {
+    xkb_layout "us"
+    xkb_variant "intl"
+}
+
+# /home/marcelo/Pictures/2qd1f3r2abta1.jpg
+#output "*" bg /home/marcelo/Pictures/2qd1f3r2abta1.jpg fill
+
+exec_always swaybg -i /home/marcelo/Pictures/_bg
+
+##################
+# run at startup
+# bar, keymap, monitors, network manager, bluetooth, notification
+##################
+exec swaymsg
+exec_always --no-startup-id setxkbmap us intl
+exec --no-startup-id nm-applet
+#exec --no-startup-id blueman-applet
+# notifications
+exec --no-startup-id dunst
+
+# IBUS -> I use for key mapping the grave symbol
+#exec ibus-daemon -drx
+
+# screen saver
+exec_always --no-startup-id xset s 3600
+exec_always --no-startup-id xset dpms 0 0 3600
+
+set $gnome-schema org.gnome.desktop.interface
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Breeze-Dark'
+    gsettings set $gnome-schema icon-theme 'Mint-Y-Aqua'
+    gsettings set $gnome-schema cursor-theme 'Breeze Light'
+    #gsettings set $gnome-schema font-name 'Sans 10'
+    gsettings set $gnome-schema font-name 'Roboto Regular 10'
+    #gsettings set $gnome-schema monospace-font-name 'Fira Code 10'
+    #gsettings set $gnome-schema document-font-name 'Roboto Regular 10'
+    gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Roboto Regular 10'
+    #gsettings set org.gnome.desktop.wm.preferences button-layout ''
+    gsettings set org.gnome.desktop.default-applications.terminal exec $term
+    #gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
+}
+
+##################
+# font
+##################
+font pango:DejaVu Sans Mono 9
+title_align center
+hide_edge_borders both
+
+##################
+# keybindings
+##################
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart inplace (preserves your layout/session, can be used to upgrade)
+bindsym $mod+Shift+r restart
+# exit sway
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+# start a terminal
+bindsym $mod+Return exec alacritty 
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# launcher
+bindsym $mod+d exec --no-startup-id wofi --show drun
+bindsym $mod+t exec wofi --show run
+
+# move focused window
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+#whenever middle mouse button is pushed on titlebar or border, close the window
+bindsym --release --border button2 kill
+
+# split in horizontal orientation
+bindsym $mod+b split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+Shift+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+bindsym $mod+Shift+s sticky toggle
+# put YouTube into fullscreen and execute this for media mode
+bindsym $mod+y fullscreen disable; floating enable; resize set 600 400; sticky enable; move window to position 1940 54
+
+# lock screen
+bindsym $mod+Shift+Escape exec swaylock -e -c 111111
+
+################## end keybindigs
+
+##################
+# workspaces
+##################
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+workspace 1 output $main
+workspace 2 output $main
+workspace 3 output $main
+workspace 4 output $main
+workspace 5 output $main
+workspace 6 output $left
+workspace 7 output $left
+workspace 8 output $left
+workspace 9 output $left
+workspace 10 output $left
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+bindsym $mod+F1 workspace $ws6
+bindsym $mod+F2 workspace $ws7
+bindsym $mod+F3 workspace $ws8
+bindsym $mod+F4 workspace $ws9
+bindsym $mod+F5 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+Shift+F1 move container to workspace $ws6
+bindsym $mod+Shift+F2 move container to workspace $ws7
+bindsym $mod+Shift+F3 move container to workspace $ws8
+bindsym $mod+Shift+F4 move container to workspace $ws9
+bindsym $mod+Shift+F5 move container to workspace $ws10
+
+workspace_auto_back_and_forth yes
+bindsym $mod+Tab workspace back_and_forth
+
+##################
+# windows
+##################
+
+# gaps
+for_window [class=".*"] border pixel 0 
+gaps inner 6
+gaps outer 2
+
+smart_gaps on
+smart_borders no_gaps
+
+for_window [class=".*"] border pixel 1 
+for_window [class="(alacritty|term)"] border pixel 3
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="About"] floating enable
+
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Pavucontrol"] resize set 900 800
+for_window [class="org.gnome.Software"] floating enable
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [class="GParted"] floating enable border normal
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        bindsym j resize shrink width 5 px or 5 ppt
+        bindsym k resize grow height 5 px or 5 ppt
+        bindsym l resize shrink height 5 px or 5 ppt
+        bindsym semicolon resize grow width 5 px or 5 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Right resize grow width 5 px or 5 ppt
+
+        bindsym Shift+Left resize shrink width 40 px or 40 ppt
+        bindsym Shift+Down resize grow height 40 px or 40 ppt
+        bindsym Shift+Up resize shrink height 40 px or 40 ppt
+        bindsym Shift+Right resize grow width 40 px or 40 ppt
+
+	bindsym $mod+1 resize set 540 px 480 px
+	bindsym $mod+2 resize set 800 px 600 px
+	bindsym $mod+3 resize set 1024 px 768 px
+	bindsym $mod+4 resize set 1200 px 900 px
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+
+########
+# bar config
+########
+bar swaybar_command waybar
+
+#bar {
+#    #status_command waybar
+#    position bottom
+#    modifier $mod
+#    font pango:DejaVu Sans Mono 10
+#
+#    #colors {
+#    #    statusline #ffff00
+#    #    separator #000000
+#    #    focused_workspace  #96B6C0 #2E4460 #ffffff
+#    #    active_workspace   #62BBC1 #010400 #ffffff
+#    #    inactive_workspace #333333 #222222 #888888
+#    #    urgent_workspace   #2f343a #900000 #ffffff
+#    #}
+#}
+#bindsym $mod+m bar mode toggle
+
+#######
+# functions | modes
+#######
+
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id swaylock -c 000000, mode "default"
+    bindsym e exec --no-startup-id swaymsg exit, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym p exec --no-startup-id systemctl poweroff, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Delete mode "$mode_system"
+
+#######
+# color scheme
+#######
+
+# default colors
+set $black #000000
+set $richblack #0c0c0c
+set $black2 #222222
+set $jet #333333
+set $grey #888888
+set $dimgrey #5f676a
+set $grey3 #484e50
+set $grey4 #292d2e
+set $gunmetal #2f343a
+set $white #ffffff
+set $darkred #900000
+set $blue #4c7899
+set $darkblue #285577
+set $lightblue #2e9ef4
+# custom 
+set $blue #1F415C
+set $darkblue #1F415C
+
+# class                 border		backgr.			text		indicator		child_border
+client.focused          $blue		$darkblue		$white		$lightblue		$darkblue
+client.focused_inactive $jet		$dimgrey		$white 		$grey3			$dimgrey
+client.unfocused        $jet 		$black2			$grey		$grey4			$black2
+client.urgent           $gunmetal	$darkred		$white		$darkred		$darkred
+client.placeholder      $black		$richblack		$white 		$black			$richblack
+client.background       $white
+
+########
+# volume control from https://github.com/hastinbe/i3-volume/blob/master/i3volume-pulseaudio.conf
+########
+# Path to volume control, without trailing slash
+set $volumepath ~/.local/i3-volume
+
+# Command for the status line
+#   ie: i3blocks, i3status
+set $statuscmd i3status
+
+# Signal used to update the status line
+#   i3blocks uses SIGRTMIN+10 by default
+#   i3status uses SIGUSR1 by default
+set $statussig SIGUSR1
+
+# Amount to increase/decrease volume as a percentage
+set $volumestep 5
+
+# pulseaudio-utils settings
+#
+# Symbolic name for sink (numeric index not supported)
+#   Recommended: comment out this setting and omit the -s option to use default sink
+#   List sink names: pacmd list-sinks | awk -F "[<>]" '/^\s+name: <.*>/{print $2}'
+#set $sinkname alsa_output.pci-0000_00_1b.0.analog-stereo
+
+# Using pulseaudio-utils (append "-s $sinkname" without quotes to override default sink)
+bindsym XF86AudioRaiseVolume exec --no-startup-id $volumepath/volume -n -t $statuscmd -u $statussig up $volumestep
+bindsym XF86AudioLowerVolume exec --no-startup-id $volumepath/volume -n -t $statuscmd -u $statussig down $volumestep
+bindsym XF86AudioMute        exec --no-startup-id $volumepath/volume -n -t $statuscmd -u $statussig mute
+
+########
+# extra
+########
+include /etc/sway/config.d/*
