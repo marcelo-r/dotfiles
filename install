@@ -1,0 +1,5 @@
+#!/bin/bash
+
+stow zsh
+stow tmux
+stow -t ~/.config .config/
