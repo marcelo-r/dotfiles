@@ -95,11 +95,8 @@ _fzf_compgen_dir() {
 }
 
 alias cmd="command -v"
-alias l="lsd"
-alias ll="lsd -l"
 alias t="tree -d"
 alias rm="rm -i"
-alias rm="trash -i"
 alias fnmodeoff="echo 0 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 alias fnmodeon="echo 1 | sudo tee /sys/module/hid_apple/parameters/fnmode"
 

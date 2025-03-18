@@ -1,0 +1,30 @@
+#!/bin/bash
+
+stow zsh
+stow tmux
+stow -t ~/.config .config/
+
+if command -v apt &> /dev/null; then
+    echo "apt is available"
+	sudo apt install fzf ripgrep fd-find zsh tmux golang neovim nodejs
+fi
+
+if command -v dnf &> /dev/null; then
+    echo "dnf is available"
+	sudo dnf install fzf ripgrep fdfind zsh tmux golang neovim nodejs
+fi
+
+if ! command -v asdf &> /dev/null; then
+    echo "asdf is missing, installing"
+    go install github.com/asdf-vm/asdf/cmd/asdf@latest
+fi
+
+asdf plugin add golang
+asdf install golang latest
+
+asdf plugin add neovim
+asdf install neovim latest
+
+asdf plugin add nodejs
+asdf install nodejs 22.14.0
+
