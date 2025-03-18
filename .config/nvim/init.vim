@@ -12,12 +12,9 @@ let g:python3_host_prog = "/usr/bin/python3"
 autocmd! bufwritepost init.vim source %
 
 set encoding=utf-8
-" allow buffers to open in background
-set hidden
-" Highlight the current line the cursor is on
-"set cursorline
-" set mouse to scroll nvim instead of terminal emulator output
-set mouse=a
+set hidden      " allow buffers to open in background
+set cursorline  " Highlight the current line the cursor is on
+set mouse=a     " set mouse to scroll nvim instead of terminal emulator output
 
 " search with case insensitive
 set hlsearch
@@ -39,12 +36,9 @@ set signcolumn=yes
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
-" Give more space for displaying messages.
-set cmdheight=2
-" shorter updatetime for better UX
-set updatetime=200
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
+set cmdheight=2     " Give more space for displaying messages.
+set updatetime=200  " shorter updatetime for better UX
+set shortmess+=c    " Don't pass messages to |ins-completion-menu|.
 
 " ensure spliting below or to the right
 set splitbelow
@@ -76,7 +70,6 @@ if has('termguicolors')
   set termguicolors
 endif
 "colorscheme sonokai
-"highlight ColorColumn ctermbg=233 ctermfg=233 guibg=#262626 guifg=#262626
 
 "Open file at same line last closed
 if has("autocmd")

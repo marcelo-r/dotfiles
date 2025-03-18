@@ -15,6 +15,11 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- my config
+require 'settings'
+require 'keymaps'
+require 'commands'
+
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
@@ -28,10 +33,6 @@ require("lazy").setup({
 })
 
 vim.cmd("colorscheme sonokai")
-
--- my config
-require 'keymaps'
-require 'commands'
 
 require("nvim-autopairs").setup {}
 

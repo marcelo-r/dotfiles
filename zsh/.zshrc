@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+source ~/.profile
 
 # Path to your oh-my-zsh installation.
 export ZSH="/home/$USER/.oh-my-zsh"
@@ -49,7 +50,7 @@ source /usr/share/fzf/shell/key-bindings.zsh
 
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 
-#eval "$(direnv hook zsh)"
+eval "$(direnv hook zsh)"
 #source $HOME/.local/kind/completion
 
 
@@ -122,3 +123,4 @@ PROMPT+='%{$reset_color%}'
 #export MY_INIT_VIM="$HOME/.config/nvim/init.vim"
 
 eval "$(gh completion -s zsh)"
+

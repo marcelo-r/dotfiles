@@ -41,7 +41,7 @@ return {
       "tpope/vim-sleuth",
       "github/copilot.vim",
       "ray-x/go.nvim",
-      "fatih/vim-go",
+      -- "fatih/vim-go",
       "rust-lang/rust.vim",
       {
         "sainnhe/sonokai",

@@ -4,7 +4,7 @@ return {
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
-      "fatih/vim-go",
+      -- "fatih/vim-go",
   },
   config = function()
     local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
@@ -27,7 +27,7 @@ return {
     vim.g.go_test_show_name = 1
     vim.g.go_jump_to_error = 0
     vim.g.go_fmt_autosave = 1
-    vim.g.go_list_height = 5 
+    vim.g.go_list_height = 5
     vim.g.go_def_reuse_buffer = 1
     vim.g.go_metalinter_autosave = 0
     vim.g.go_metalinter_autosave_enabled = {'vet', 'revive', 'errcheck', 'deadcode', 'gosimple', 'unused', 'ineffassign', 'lll', 'staticcheck', 'prealloc', 'gomnd', 'goconst', 'gosec', 'funlen'}
