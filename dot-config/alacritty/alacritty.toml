@@ -33,7 +33,7 @@ EDITOR = "nvim"
 TERM = "alacritty"
 
 [font]
-size = 11.0
+size = 12.0
 
 [font.bold]
 family = "FiraCode Nerd Font Mono"
@@ -63,9 +63,17 @@ history = 5000
 program = "/bin/zsh"
 args = ["--login", "-c", "tmux attach || tmux -u"]
 
+# Window decorations.
+# Values for `decorations`:
+#   - Full: Borders and title bar
+#   - None: Neither borders nor title bar
+#   - Transparent (macOS only): Title bar, transparent background and title bar buttons
+#   - Buttonless (macOS only): Title bar, transparent background and no title bar buttons
+# Default: "Full"
 [window]
-decorations = "None"
+decorations = "Full"
 #gtk_theme_variant = "dark"
+
 
 [window.class]
 general = "Alacritty"

@@ -36,7 +36,7 @@
         "enable-bar-scroll": true,
         "all-outputs": false,
         "warp-on-scroll": false,
-        "format": "{name}: {icon}",
+        "format": "{name}",
         "format-icons": {
             "1": "",
             "2": "",
